@@ -14,7 +14,7 @@ string Engine::NumberToString(int num) {
 	ss << num;
 	return ss.str();
 }
-void Engine::Init(TrieNode***& root, TrieNode*& stopword) {//Khanh
+void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	root = new TrieNode * *[15];
 	for (int i = 0; i < 15; ++i) {
 		if (i == 9 || i == 13) root[i] = new TrieNode * [100];
