@@ -24,10 +24,11 @@ public:
 	TrieNode* getNode();
 	string NumberToString(int num);
 	void Init(TrieNode***& root, TrieNode*& stopword);
-	//void insertWord
-	//void insertStopword
+	void LoadStopword(TrieNode*& stopword);
+	void InsertStopword(TrieNode*& stopword,string word);
 	void InputFile(TrieNode*& root, ifstream& file);
 	void InputListFile(TrieNode***& root);
 	string OpenFile(int i, int j);
+	int convert(char key);
 	
 };

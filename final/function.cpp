@@ -18,12 +18,12 @@ string Engine::NumberToString(int num) {
 }
 void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	root = new TrieNode * *[15];
-	for (int i = 0; i < 15; ++i) 
-		if(i==14)root[i] = new TrieNode * [MAX];
+	for (int i = 0; i < 26; ++i) 
+		if(i==25)root[i] = new TrieNode * [MAX];
 		 else root[i] = new TrieNode * [100];
 	
-	for (int i = 0; i < 15; ++i)
-		if (i != 14)
+	for (int i = 0; i < 26; ++i)
+		if (i != 25)
 			for (int j = 0; j < 100; ++j) root[i][j] = getNode();
 		else
 			for (int j = 0; j < MAX; ++j)root[i][j] = getNode();
@@ -31,16 +31,42 @@ void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	
 	
 	InputListFile(root);
-	//InsertStopword(stopword);
+	LoadStopword(stopword);
 	
 }
 void Engine::InputFile(TrieNode*& root, ifstream& file)
 {
 }
+void Engine::InsertStopword(TrieNode*& root, string key) {
+	TrieNode* cur = root;
+	int index, length = key.length();
+	for (int i = 0; i < length; ++i) {
+		index = convert(key[i]);
+		if (index == -1) continue;
+		if (!cur->children[index]) cur->children[index] = getNode();
+		cur = cur->children[index];
+	}
+	cur->isLeaf = true;
+}
+void Engine::LoadStopword(TrieNode*& root) {
+	ifstream file;
+	string word;
+	file.open("stopword.txt");
+	if (!file.is_open()) return;
+	while (!file.eof()) {
+		getline(file, word);
+		InsertStopword(root, word);
+	}
+	file.close();
+}
 void Engine::InputListFile(TrieNode***& root) {
 	ifstream file;
-	for (int i = 1; i <= 15; ++i) 
-			for (int j = 1; j <= 100; ++j) {
+	for (int i = 1; i <= 26; ++i)
+	{
+		int limit = 100;
+		if (i == 26)limit = MAX;
+
+			for (int j = 1; j <= limit; ++j) {
 				string filename = OpenFile(i, j);
 				file.open(filename);
 				if (!file.is_open()) { cout << "Cannot open file " << filename << endl; continue; }
@@ -48,13 +74,27 @@ void Engine::InputListFile(TrieNode***& root) {
 				InputFile(root[i - 1][j - 1], file);
 				file.close();
 			}
+	}
 	
 }
-	string Engine::OpenFile(int i, int j) {
-		string group = NumberToString(i), number = NumberToString(j);
-		if (i == 14)
-			if (j < 10)return ("Data" + '0' + number + ".txt");
-			else return("Data" + number + ".txt");
-	 return ("Group" + group + "News" + number + ".txt");
-	
+string Engine::OpenFile(int i, int j)
+{
+	string group = NumberToString(i), number = NumberToString(j);
+	if (i == 26)
+		if (j < 10)return ("Data" + '0' + number + ".txt");
+		else return("Data" + number + ".txt");
+	return ("Group" + group + "News" + number + ".txt");
+
+};
+int Engine::convert(char key) {
+		if (key >= 48 && key <= 57) return (key - '0');
+		if (key >= 97 && key <= 122) return (int(key) - 87);
+		if (key >= 65 && key <= 90) return (int(key) - 55);
+		if (key == ' ') return 36;
+		if (key == '.') return 37;
+		if (key == '$') return 38;
+		if (key == '%') return 39;
+		if (key == '#') return 40;
+		if (key == '-') return 41;
+		return -1;
 	}
