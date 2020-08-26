@@ -1,4 +1,5 @@
 #pragma once
+#define MAX 12319
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -17,16 +18,7 @@ struct Store {
 	vector<int> pos;
 	int score;
 };
-TrieNode* Engine::getNode() {
-	TrieNode* pNode = NULL;
-	pNode = new TrieNode;
-	if (pNode) {
-		pNode->isLeaf = false;
-		pNode->isTitle = false;
-		for (int i = 0; i < 42; ++i) pNode->children[i] = NULL;
-	}
-	return pNode;
-}
+
 class Engine {
 public:
 	TrieNode* getNode();
@@ -34,5 +26,8 @@ public:
 	void Init(TrieNode***& root, TrieNode*& stopword);
 	//void insertWord
 	//void insertStopword
+	void InputFile(TrieNode*& root, ifstream& file);
+	void InputListFile(TrieNode***& root);
+	string OpenFile(int i, int j);
 	
 };
