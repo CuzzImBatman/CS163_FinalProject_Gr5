@@ -16,18 +16,14 @@ string Engine::NumberToString(int num) {
 }
 void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	root = new TrieNode * *[15];
+	for (int i = 0; i < 15; ++i) 
+		 root[i] = new TrieNode * [100];
+	
 	for (int i = 0; i < 15; ++i) {
-		if (i == 9 || i == 13) root[i] = new TrieNode * [100];
-		else if (i != 14) root[i] = new TrieNode * [50];
-		else root[i] = new TrieNode * [800];
-	}
-	for (int i = 0; i < 15; ++i) {
-		if (i == 9 || i == 13)
+		
 			for (int j = 0; j < 100; ++j) root[i][j] = getNode();
-		else if (i != 14)
-			for (int j = 0; j < 50; ++j) root[i][j] = getNode();
-		else for (int j = 800; j < 1600; ++j) root[i][j - 800] = getNode();
-	}
+		
+	
 	
 	//InputListFile(root);
 	//InsertStopword(stopword);
