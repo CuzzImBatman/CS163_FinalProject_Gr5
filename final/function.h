@@ -1,5 +1,5 @@
 #pragma once
-#define MAX 12319
+#define MAX 123
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -30,5 +30,10 @@ public:
 	void InputListFile(TrieNode***& root);
 	string OpenFile(int i, int j);
 	int convert(char key);
-	
+	void InputSentence(TrieNode*& root, string sen, int& start, bool valid);
+	string SenFilter(string sen);
+	void insertWord(TrieNode*& root, string key, int place, bool isTitle);
+	bool valid(char& key);
+	bool isNumber(char key);
 };
+bool Is_empty(ifstream& in);
