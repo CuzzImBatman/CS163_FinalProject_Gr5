@@ -37,7 +37,8 @@ public:
 	bool isNumber(char key);
 	bool checkOperator(string query);
 	vector<string> getSyn(string key);
-    void Engine::viewHistory(string query, vector<string> &history);
-    void deleteTrie(TrieNode ***&root);
+   
+   // void deleteTrie(TrieNode ***&root);
 };
 bool Is_empty(ifstream& in);
+void viewHistory(string query, vector<string>& history);

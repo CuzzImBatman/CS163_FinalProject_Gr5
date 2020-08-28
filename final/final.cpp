@@ -1,6 +1,7 @@
 
 #include "function.h"
 
+using namespace std;
 int main()
 {
 	Engine search;
@@ -25,8 +26,11 @@ int main()
 		cin.ignore();
 		if (choice)
 		{
-
-
+			vector<string>list;
+		viewHistory(query, list);
+		cin >> choice;
+		if (choice > list.size())cout << "Invalid input" << endl;
+		query = list[choice];
 		}
 		else
 		{

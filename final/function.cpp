@@ -89,7 +89,7 @@ bool Engine::checkOperator(string query) {
 	return true;
 }
 
-void Engine::viewHistory(string query, vector<string> &history){
+void viewHistory(string query, vector<string> &history){
     ifstream in;
     in.open("final/Search Engine-Data/history.txt");
     if (!in) {
@@ -97,13 +97,21 @@ void Engine::viewHistory(string query, vector<string> &history){
         in.close();
         return;
     }
+	cout << "suggestion: " << endl;
     string tmp; int i=1;
     while (!in.eof()){
         getline(in, tmp);
-        if (tmp.find(query) != -1){
+		if (tmp == query || tmp.find(query) == -1)continue;
+		
             history.push_back(tmp);
             cout<<i++<<". "<<tmp<<endl;
-        }
+        
     }
-    in.close();
+	in.close();
+	ofstream out;
+	out.open("final/Search Engine-Data/history.txt");
+	out << query << endl;
+	out.close();
+	
+    
 }
