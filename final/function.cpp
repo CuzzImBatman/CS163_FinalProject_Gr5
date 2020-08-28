@@ -88,3 +88,22 @@ bool Engine::checkOperator(string query) {
 	
 	return true;
 }
+
+void Engine::viewHistory(string query, vector<string> &history){
+    ifstream in;
+    in.open("final/Search Engine-Data/history.txt");
+    if (!in) {
+        cout <<"Cannot open file History !\n";
+        in.close();
+        return;
+    }
+    string tmp; int i=1;
+    while (!in.eof()){
+        getline(in, tmp);
+        if (tmp.find(query) != -1){
+            history.push_back(tmp);
+            cout<<i++<<". "<<tmp<<endl;
+        }
+    }
+    in.close();
+}
