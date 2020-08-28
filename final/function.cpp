@@ -1,4 +1,8 @@
 #include "function.h"
+bool Is_empty(ifstream& in)
+{
+	return in.peek() == ifstream::traits_type::eof();
+}
 TrieNode* Engine::getNode() {
 	TrieNode* pNode = NULL;
 	pNode = new TrieNode;
@@ -11,25 +15,72 @@ TrieNode* Engine::getNode() {
 }
 string Engine::NumberToString(int num) {
 	stringstream ss;
+
 	ss << num;
+	if (num < 10)return '0' + ss.str();
 	return ss.str();
 }
-void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
-	root = new TrieNode * *[15];
-	for (int i = 0; i < 15; ++i) {
-		if (i == 9 || i == 13) root[i] = new TrieNode * [100];
-		else if (i != 14) root[i] = new TrieNode * [50];
-		else root[i] = new TrieNode * [800];
+bool Engine::isNumber(char key) 
+{
+	if (key >= 48 && key <= 57) return true;
+	return false;
+}
+int Engine::convert(char key) {
+	if (key >= 48 && key <= 57) return (key - '0');
+	if (key >= 97 && key <= 122) return (int(key) - 87);
+	if (key >= 65 && key <= 90) return (int(key) - 55);
+	if (key == ' ') return 36;
+	if (key == '.') return 37;
+	if (key == '$') return 38;
+	if (key == '%') return 39;
+	if (key == '#') return 40;
+	if (key == '-') return 41;
+	return -1;
+}
+bool Engine::valid(char& key) {
+	if (key >= 65 && key <= 90) {
+		key = int(key) + 32;
+		return true;
 	}
-	for (int i = 0; i < 15; ++i) {
-		if (i == 9 || i == 13)
-			for (int j = 0; j < 100; ++j) root[i][j] = getNode();
-		else if (i != 14)
-			for (int j = 0; j < 50; ++j) root[i][j] = getNode();
-		else for (int j = 800; j < 1600; ++j) root[i][j - 800] = getNode();
+	if ((key >= 48 && key <= 57) || (key >= 97 && key <= 122)) return true;
+	if (key == '\n') {
+		key = ' '; return true;
 	}
-	
-	//InputListFile(root);
-	//InsertStopword(stopword);
-	
+	if (key == '—') {
+		key = '-'; return true;
+	}
+	if (key == ' ' || key == '$' || key == '%' || key == '#' || key == '-') return true;
+	return false;
+}
+vector<string> getSyn(string sen) {
+	vector<string> res;
+	res.push_back(sen);
+	if (sen[0] >= 'a' && sen[0] <= 'z') sen[0] -= 32;
+	for (int i = 1; i < sen.length(); ++i)
+		if (sen[i] >= 'A' && sen[i] <= 'Z') sen[i] += 32;
+	ifstream file; file.open("synonym.txt");
+	while (!Is_empty(file)) 
+	{
+		string tmp;
+		getline(file, tmp);
+		stringstream ss(tmp);
+		ss >> tmp;
+		if (tmp != "KEY:") continue;
+		ss >> tmp;
+		if (tmp != sen) continue;
+		if (tmp > sen) return res;
+		getline(file, tmp);
+		ss.str("");  ss << tmp;
+		ss >> tmp;
+		if (tmp != "SYN:") return res;
+		while (ss >> tmp)
+		{
+			if (tmp[0] == '[' || tmp[0] == '{') continue;
+			res.push_back(tmp);
+		}
+		file.close();
+		return res;
+	}
+	file.close();
+	return res;
 }
