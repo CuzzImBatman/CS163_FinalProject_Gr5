@@ -152,6 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="final.cpp" />
+    <ClCompile Include="Init.cpp" />
+    <ClCompile Include="search.cpp" />
     <ClCompile Include="function.cpp" />
   </ItemGroup>
   <ItemGroup>
