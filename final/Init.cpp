@@ -147,3 +147,12 @@ string Engine::OpenFile(int i, int j)
 	return ("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Group" + group + "News" + number + ".txt"); 
 
 };
+
+void deleteTrie(TrieNode ***&root){
+    for (int i = 0; i < 26; ++i)
+    if (i != 25)
+        for (int j = 0; j < 100; ++j) delete root[i][j];
+    else
+        for (int j = 0; j < MAX; ++j) delete root[i][j];
+}
+
