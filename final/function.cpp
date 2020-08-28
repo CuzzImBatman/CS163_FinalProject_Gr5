@@ -52,7 +52,7 @@ bool Engine::valid(char& key) {
 	if (key == ' ' || key == '$' || key == '%' || key == '#' || key == '-') return true;
 	return false;
 }
-vector<string> getSyn(string sen) {
+vector<string> Engine::getSyn(string sen) {
 	vector<string> res;
 	res.push_back(sen);
 	if (sen[0] >= 'a' && sen[0] <= 'z') sen[0] -= 32;
@@ -83,4 +83,8 @@ vector<string> getSyn(string sen) {
 	}
 	file.close();
 	return res;
+}
+bool Engine::checkOperator(string query) {
+	
+	return true;
 }

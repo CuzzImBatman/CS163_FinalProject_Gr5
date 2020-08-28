@@ -1,4 +1,4 @@
-﻿  final.cpp
-  function.cpp
-  Generating Code...
-  final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe
+﻿  function.cpp
+D:\CS163_FinalProject_Gr5\final\function.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
+final.obj : error LNK2019: unresolved external symbol "public: bool __thiscall Engine::checkOperator(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?checkOperator@Engine@@QAE_NV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function _main
+D:\CS163_FinalProject_Gr5\final\Debug\final.exe : fatal error LNK1120: 1 unresolved externals
