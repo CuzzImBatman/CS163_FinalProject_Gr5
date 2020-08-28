@@ -18,6 +18,12 @@
     <ClCompile Include="final.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="search.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="function.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

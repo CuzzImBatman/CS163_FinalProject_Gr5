@@ -1,5 +1,5 @@
 #pragma once
-#define MAX 123
+#define MAX 123456
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -13,7 +13,7 @@ struct TrieNode {
 	bool isLeaf, isTitle;
 	vector<int> order;
 };
-struct Store {
+struct Data {
 	string filename;
 	vector<int> pos;
 	int score;
@@ -35,5 +35,7 @@ public:
 	void insertWord(TrieNode*& root, string key, int place, bool isTitle);
 	bool valid(char& key);
 	bool isNumber(char key);
+	bool checkOperator(string query);
+	vector<string> getSyn(string key);
 };
 bool Is_empty(ifstream& in);
