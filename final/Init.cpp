@@ -142,9 +142,9 @@ string Engine::OpenFile(int i, int j)
 {
 	string group = NumberToString(i), number = NumberToString(j);
 	if (i == 26)
-		if (j < 10)return ("CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" +  '0' + number + ".txt");
-		else return("CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" + number + ".txt");
-	return ("CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Group" + group + "News" + number + ".txt"); 
+		if (j < 10)return ("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" +  '0' + number + ".txt");
+		else return("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" + number + ".txt");
+	return ("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Group" + group + "News" + number + ".txt"); 
 
 };
 
