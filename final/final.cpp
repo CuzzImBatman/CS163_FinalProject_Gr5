@@ -26,11 +26,19 @@ int main()
 		cin.ignore();
 		if (choice)
 		{
-			vector<string>list;
-		viewHistory(query, list);
-		cin >> choice;
-		if (choice > list.size())cout << "Invalid input" << endl;
-		query = list[choice];
+			vector<string> list;
+			viewHistory(query, list);
+			if (list.size()) {
+				do {
+					cin >> choice;
+					if (choice > list.size()) {
+						cout << "Invalid input" << endl;
+						viewHistory(query, list);
+						continue;
+					}
+					query = list[choice];
+				} while (choice > list.size());
+			}
 		}
 		else
 		{

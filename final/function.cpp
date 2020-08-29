@@ -101,11 +101,10 @@ void viewHistory(string query, vector<string> &history){
     string tmp; int i=1;
     while (!in.eof()){
         getline(in, tmp);
-		if (tmp == query || tmp.find(query) == -1)continue;
-		
-            history.push_back(tmp);
-            cout<<i++<<". "<<tmp<<endl;
-        
+		if (tmp == query || tmp.find(query) == -1) continue;
+
+		history.push_back(tmp);
+		cout<<i++<<". "<<tmp<<endl;
     }
 	in.close();
 	ofstream out;
