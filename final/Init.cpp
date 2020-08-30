@@ -1,5 +1,6 @@
 #include "function.h"
 
+<<<<<<< Updated upstream
 void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	root = new TrieNode * *[25];
 	for (int i = 0; i < 26; ++i) 
@@ -15,6 +16,24 @@ void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
 	
 	
 	InputListFile(root);
+=======
+void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenames) {
+	ifstream in;
+	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\___index.txt");
+	if (!in.is_open())cout << "cannot" << endl;
+	while (!Is_empty(in))
+	{
+		string tmp;
+		getline(in, tmp);
+		filenames.push_back(tmp);
+	}
+	//root = new TrieNode * [filenames.size()];
+	root = new TrieNode * [MAX];
+	//for (int i = 0; i < filenames.size(); i++)	root[i] = getNode();
+	for (int i = 0; i < MAX; i++)	root[i] = getNode();
+
+	InputListFile(root, filenames);
+>>>>>>> Stashed changes
 	LoadStopword(stopword);
 	
 }
@@ -122,10 +141,24 @@ void Engine::LoadStopword(TrieNode*& root) {
 }
 void Engine::InputListFile(TrieNode***& root) {
 	ifstream file;
+<<<<<<< Updated upstream
 	for (int i = 1; i <= 26; ++i)
 	{
 		int limit = 100;
 		if (i == 26)limit = MAX;
+=======
+	//for (int i = 0; i < filenames.size(); ++i) 
+	for (int i = 0; i < MAX; ++i) 
+	{
+		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\"+filenames[i]);
+		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }
+		//cout << filenames[i] << endl;
+		InputFile(root[i], file);
+		file.close();
+	}
+}
+
+>>>>>>> Stashed changes
 
 			for (int j = 1; j <= limit; ++j) {
 				string filename = OpenFile(i, j);

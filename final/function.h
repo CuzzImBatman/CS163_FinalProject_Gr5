@@ -1,5 +1,9 @@
 #pragma once
+<<<<<<< Updated upstream
 #define MAX 123456
+=======
+#define MAX 1234
+>>>>>>> Stashed changes
 #include<iostream>
 #include<fstream>
 #include<string>

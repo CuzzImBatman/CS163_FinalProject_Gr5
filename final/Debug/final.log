@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 ﻿  final.cpp
   function.cpp
   Generating Code...
+=======
+﻿  Init.cpp
+>>>>>>> Stashed changes
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe
