@@ -1,4 +1,4 @@
-#pragma once
+#cpragma once
 #define MAX 12345
 #include<iostream>
 #include<fstream>
@@ -40,7 +40,8 @@ public:
 	bool rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<int>& pos, int& score);
 	vector<int> Sync(vector<int>& v1, vector<int>& v2);
 	void takeSpace(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2);
-   // void deleteTrie(TrieNode ***&root);
+   // void deleteTrie(TrieNode **&root, n);
+    void deleteRoot(TrieNode *&root);
 };
 bool Is_empty(ifstream& in);
 void viewHistory(string query, vector<string>& history);

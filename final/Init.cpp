@@ -130,12 +130,15 @@ void Engine::InputListFile(TrieNode**& root, vector<string>& filenames) {
 	}
 }
 
-
-void deleteTrie(TrieNode***& root) {
-	for (int i = 0; i < 26; ++i)
-		if (i != 25)
-			for (int j = 0; j < 100; ++j) delete root[i][j];
-		else
-			for (int j = 0; j < MAX; ++j) delete root[i][j];
+void deleteRoot(TrieNode *&root){
+    for (int i=0;i<42;++i){
+        if (root.children[i])
+            deleteRoot(root.children[i]);
+    }
+    delete root;
+}
+void deleteTrie(TrieNode**& root, int n) {
+    for (int i=0;i<n;++i)
+        deleteRoot(root[i]);
 }
 
