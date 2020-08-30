@@ -91,7 +91,7 @@ bool Engine::checkOperator(string query) {
 
 void viewHistory(string query, vector<string> &history){
     ifstream in;
-    in.open("final/Search Engine-Data/history.txt");
+    in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
     if (!in) {
         cout <<"Cannot open file History !\n";
         in.close();
@@ -108,7 +108,7 @@ void viewHistory(string query, vector<string> &history){
     }
 	in.close();
 	ofstream out;
-	out.open("final/Search Engine-Data/history.txt");
+	out.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
 	out << query << endl;
 	out.close();
 	
