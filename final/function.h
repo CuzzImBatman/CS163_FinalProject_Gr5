@@ -1,5 +1,5 @@
 #pragma once
-#define MAX 123456
+#define MAX 12345
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -23,12 +23,11 @@ class Engine {
 public:
 	TrieNode* getNode();
 	string NumberToString(int num);
-	void Init(TrieNode***& root, TrieNode*& stopword);
+	void Init(TrieNode**& root, TrieNode*& stopword, vector<string> &filenames);
 	void LoadStopword(TrieNode*& stopword);
 	void InsertStopword(TrieNode*& stopword,string word);
 	void InputFile(TrieNode*& root, ifstream& file);
-	void InputListFile(TrieNode***& root);
-	string OpenFile(int i, int j);
+	void InputListFile(TrieNode**& root, vector<string>& filenames);
 	int convert(char key);
 	void InputSentence(TrieNode*& root, string sen, int& start, bool valid);
 	string SenFilter(string sen);
@@ -37,7 +36,10 @@ public:
 	bool isNumber(char key);
 	bool checkOperator(string query);
 	vector<string> getSyn(string key);
-   
+	TrieNode* wordSearch(TrieNode* root, string key, bool title);
+	bool rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<int>& pos, int& score);
+	vector<int> Sync(vector<int>& v1, vector<int>& v2);
+	void takeSpace(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2);
    // void deleteTrie(TrieNode ***&root);
 };
 bool Is_empty(ifstream& in);

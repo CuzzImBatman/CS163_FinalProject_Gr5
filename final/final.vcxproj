@@ -157,7 +157,6 @@
     <ClCompile Include="function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="final.h" />
     <ClInclude Include="function.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
