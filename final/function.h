@@ -1,12 +1,12 @@
 #pragma once
-#define MAX 12345
+#define MAX 1234
 #include<iostream>
 #include<fstream>
 #include<string>
 #include<sstream>
 #include<vector>
 #include<algorithm>
-#include<ctime>
+#include <queue>
 using namespace std;
 struct TrieNode {
 	TrieNode* children[42];//0-9:number,10-35:words,36:maybe :,37:.(for so thap phan), 38:$, 39:%, 40:#, 41:-
@@ -16,7 +16,11 @@ struct TrieNode {
 struct Data {
 	string filename;
 	vector<int> pos;
-	int score;
+	int score=0;
+	bool operator<(const Data& o) const
+	{
+		return score < o.score;
+	}
 };
 
 class Engine {
@@ -39,8 +43,9 @@ public:
 	TrieNode* wordSearch(TrieNode* root, string key, bool title);
 	bool rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<int>& pos, int& score);
 	vector<int> Sync(vector<int>& v1, vector<int>& v2);
-	void takeSpace(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2);
+	void takeLocal(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2);
    // void deleteTrie(TrieNode ***&root);
 };
 bool Is_empty(ifstream& in);
 void viewHistory(string query, vector<string>& history);
+bool scoreCompare(const Data a, const Data b);

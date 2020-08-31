@@ -129,7 +129,7 @@ void viewHistory(string query, vector<string> &history){
 	
     
 }
-void Engine::takeSpace(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2) {//Khanh
+void Engine::takeLocal(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2) {//Khanh
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
 	while (i < size1 && j < size2) {
 		if (res1[i] + cnt < res2[j]) ++i;
@@ -139,4 +139,8 @@ void Engine::takeSpace(vector<int>& res1, vector<int>& res2, int cnt, vector<int
 			place2.push_back(res2[j++]);
 		}
 	}
+}
+bool scoreCompare(const Data a, const Data b)
+{
+	return a.score > b.score;
 }

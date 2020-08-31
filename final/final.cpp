@@ -42,12 +42,49 @@ int main()
 		//vector<string> synonyms;
 		//if (query[0] == '~') synonyms = search.getSyn(query.substr(1));
 		bool check = search.checkOperator(query);
-		for (int i = 0; i < filenames.size()-1; i++)
+		priority_queue <Data>first, final;
+		int Output = 0;
+		for (int i = 0; i < MAX; i++)
 			{
-				if (check);
+			Data store;
+				if (check) 
+				{
+					if (search.rootSearch(root[i], '"' + query + '"', stopword, store.pos, store.score))
+					{
+						++Output;
+						store.filename = filenames[i];
+						first.push(store);
+						continue;
+					}
+				}
+				if (search.rootSearch(root[i], query, stopword, store.pos, store.score))
+				{
+					++Output;
+					store.filename = filenames[i];
+					final.push(store);
+				}
 			}
-
+		/*sort(first.begin(), first.end(), scoreCompare);
+		sort(final.begin(), final.end(), scoreCompare);
+		for (int i = 0; i < first.size(); i++)
+			cout << first[i].filename << endl;
+		for (int i = 0; i < final.size(); i++)
+			cout << final[i].filename << endl;*/
+		while (first.size())
+		{
+			Data output = first.top();
+			cout << output.score << endl;
+			first.pop();
+		}
+		while (final.size())
+		{
+			Data output = final.top();
+			cout << output.score << endl;
+			final.pop();
+		}
+		
 	}
+	
 }
 
 //
