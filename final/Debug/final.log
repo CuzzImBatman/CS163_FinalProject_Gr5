@@ -1,10 +1,6 @@
 ﻿  Init.cpp
-D:\CS163_FinalProject_Gr5\final\Init.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\Init.cpp(124,20): warning C4018: '<': signed/unsigned mismatch
   final.cpp
 D:\CS163_FinalProject_Gr5\final\final.cpp(33,14): warning C4018: '>': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\final.cpp(45,21): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\final.cpp(47,15): warning C4390: ';': empty controlled statement found; is this the intent?
   function.cpp
 D:\CS163_FinalProject_Gr5\final\function.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
   search.cpp
