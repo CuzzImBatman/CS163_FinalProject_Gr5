@@ -1,5 +1,7 @@
+
 #pragma once
 #define MAX 1234
+
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -43,9 +45,11 @@ public:
 	TrieNode* wordSearch(TrieNode* root, string key, bool title);
 	bool rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<int>& pos, int& score);
 	vector<int> Sync(vector<int>& v1, vector<int>& v2);
+
 	void takeLocal(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2);
    // void deleteTrie(TrieNode ***&root);
 };
 bool Is_empty(ifstream& in);
 void viewHistory(string query, vector<string>& history);
 bool scoreCompare(const Data a, const Data b);
+
