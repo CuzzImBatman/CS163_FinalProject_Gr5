@@ -1,3 +1,8 @@
-﻿  final.cpp
-D:\CS163_FinalProject_Gr5\final\final.cpp(32,14): warning C4018: '>': signed/unsigned mismatch
+﻿  Init.cpp
+  final.cpp
+D:\CS163_FinalProject_Gr5\final\final.cpp(33,14): warning C4018: '>': signed/unsigned mismatch
+  function.cpp
+D:\CS163_FinalProject_Gr5\final\function.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
+  search.cpp
+  Generating Code...
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe

@@ -88,7 +88,21 @@ bool Engine::checkOperator(string query) {
 	
 	return true;
 }
-
+vector<int> Engine::Sync(vector<int>& local1, vector<int>& local2) {
+	if (local1.empty()) return local2;
+	if (local2.empty()) return local1;
+	vector<int> sync;
+	int i = 0, j = 0, size1 = local1.size(), size2 = local2.size();
+	while (i < size1 && j < size2)
+	{
+		if (local1[i] < local2[j]) sync.push_back(local1[i++]);
+		else if (local2[j] < local1[i]) sync.push_back(local2[j++]);
+		else sync.push_back(local2[j++]); ++i;
+	}
+	while (i < size1) sync.push_back(local1[i++]);
+	while (j < size2) sync.push_back(local2[j++]);
+	return sync;
+}
 void viewHistory(string query, vector<string> &history){
     ifstream in;
     in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
@@ -113,4 +127,19 @@ void viewHistory(string query, vector<string> &history){
 	out.close();
 	
     
+}
+void Engine::takeLocal(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2) {//Khanh
+	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
+	while (i < size1 && j < size2) {
+		if (res1[i] + cnt < res2[j]) ++i;
+		else if (res2[j] < res1[i] + cnt) ++j;
+		else {
+			place1.push_back(res1[i++]);
+			place2.push_back(res2[j++]);
+		}
+	}
+}
+bool scoreCompare(const Data a, const Data b)
+{
+	return a.score > b.score;
 }

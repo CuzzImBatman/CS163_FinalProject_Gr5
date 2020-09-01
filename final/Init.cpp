@@ -1,32 +1,32 @@
 #include "function.h"
 
-void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
-	root = new TrieNode * *[25];
-	for (int i = 0; i < 26; ++i) 
-		if(i==25)root[i] = new TrieNode * [MAX];
-		 else root[i] = new TrieNode * [100];
-	
-	for (int i = 0; i < 26; ++i)
-		if (i != 25)
-			for (int j = 0; j < 100; ++j) root[i][j] = getNode();
-		else
-			for (int j = 0; j < MAX; ++j)root[i][j] = getNode();
-		
-	
-	
-	InputListFile(root);
+void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenames) {
+	ifstream in;
+	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\___index.txt");
+	if (!in.is_open())cout << "cannot" << endl;
+	while (!Is_empty(in))
+	{
+		string tmp;
+		getline(in, tmp);
+		filenames.push_back(tmp);
+	}
+	root = new TrieNode * [filenames.size()];
+	//for (int i = 0; i < filenames.size(); i++)	root[i] = getNode();
+	for (int i = 0; i < MAX; i++)	root[i] = getNode();
+
+	InputListFile(root, filenames);
 	LoadStopword(stopword);
-	
+
 }
 void Engine::InputFile(TrieNode*& root, ifstream& file)
 {
 	int start = 0;
-	string sentence; 
-	getline(file, sentence,'\n');
+	string sentence;
+	getline(file, sentence, '\n');
 	InputSentence(root, sentence, start, true);//a trie for the inside title, true means title:
 	bool remain = false;
 	while (!Is_empty(file)) {
-		
+
 		if (!remain)getline(file, sentence, '.');
 		else
 		{
@@ -35,14 +35,14 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 			sentence = sentence + '.' + carry;
 		}
 
-		if (sentence.length() && isNumber(sentence.back())) 
+		if (sentence.length() && isNumber(sentence.back()))
 		{
-			string next; 
+			string next;
 			getline(file, next, '.');
-			if (next.length() && isNumber(next[0])) 
+			if (next.length() && isNumber(next[0]))
 			{
 				sentence = sentence + '.' + next;
-				if(isNumber(next.back()))remain = true;
+				if (isNumber(next.back()))remain = true;
 				else
 				{
 					InputSentence(root, sentence, start, false);
@@ -54,11 +54,11 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 				InputSentence(root, sentence, start, false);
 				InputSentence(root, next, start, false);
 				remain = false;
-				
+
 			}
 		}
 		else InputSentence(root, sentence, start, false);
-		
+
 	}
 }
 void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid) {//start:place to start sentence
@@ -120,39 +120,26 @@ void Engine::LoadStopword(TrieNode*& root) {
 	}
 	file.close();
 }
-void Engine::InputListFile(TrieNode***& root) {
+void Engine::InputListFile(TrieNode**& root, vector<string>& filenames) {
 	ifstream file;
-	for (int i = 1; i <= 26; ++i)
-	{
-		int limit = 100;
-		if (i == 26)limit = MAX;
-
-			for (int j = 1; j <= limit; ++j) {
-				string filename = OpenFile(i, j);
-				file.open(filename);
-				if (!file.is_open()) { cout << "Cannot open file " << filename << endl; continue; }
-				cout << i << " " << j << endl;
-				InputFile(root[i - 1][j - 1], file);
-				file.close();
-			}
+	for (int i = 0; i < MAX; ++i) {
+		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\"+filenames[i]);
+		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }
+		//cout << filenames[i] << endl;
+		InputFile(root[i], file);
+		file.close();
 	}
-	
 }
-string Engine::OpenFile(int i, int j)
-{
-	string group = NumberToString(i), number = NumberToString(j);
-	if (i == 26)
-		if (j < 10)return ("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" +  '0' + number + ".txt");
-		else return("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Data" + number + ".txt");
-	return ("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" "Group" + group + "News" + number + ".txt"); 
 
-};
-
-void deleteTrie(TrieNode ***&root){
-    for (int i = 0; i < 26; ++i)
-    if (i != 25)
-        for (int j = 0; j < 100; ++j) delete root[i][j];
-    else
-        for (int j = 0; j < MAX; ++j) delete root[i][j];
+void deleteRoot(TrieNode *&root){
+    for (int i=0;i<42;++i){
+        if (root.children[i])
+            deleteRoot(root.children[i]);
+    }
+    delete root;
+}
+void deleteTrie(TrieNode**& root, int n) {
+    for (int i=0;i<n;++i)
+        deleteRoot(root[i]);
 }
 
