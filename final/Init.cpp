@@ -11,8 +11,8 @@ void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenam
 		filenames.push_back(tmp);
 	}
 	root = new TrieNode * [filenames.size()];
-	for (int i = 0; i < filenames.size(); i++)	root[i] = getNode();
-	//for (int i = 0; i < MAX; i++)	root[i] = getNode();
+	for (int i = 0; i < filenames.size(); i++)	root[i] =new TrieNode;
+	//for (int i = 0; i < MAX; i++)	root[i] = new TrieNode;
 
 	InputListFile(root, filenames);
 	LoadStopword(stopword);
@@ -91,10 +91,12 @@ void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
 	for (int i = 0; i < length; ++i) {
 		index = convert(key[i]);
 		if (index == -1) continue;
-		if (!cur->children[index]) cur->children[index] = getNode();
-		cur = cur->children[index];
+		char x = key[i];
+		if (cur->children.find(x) == cur->children.end())
+			cur->children[x] = getNode();
 	}
-	cur->isLeaf = true;
+	
+	cur->isEnd = true;
 	cur->order.push_back(place);
 	if (valid) cur->isTitle = true;
 }
@@ -107,7 +109,7 @@ void Engine::InsertStopword(TrieNode*& root, string key) {
 		if (!cur->children[index]) cur->children[index] = getNode();
 		cur = cur->children[index];
 	}
-	cur->isLeaf = true;
+	cur->isEnd = true;
 }
 void Engine::LoadStopword(TrieNode*& root) {
 	ifstream file;
@@ -131,15 +133,15 @@ void Engine::InputListFile(TrieNode**& root, vector<string>& filenames) {
 	}
 }
 
-void deleteRoot(TrieNode *&root){
+/*void deleteRoot(TrieNode *&root){
     for (int i=0;i<42;++i){
         if (root.children[i])
             deleteRoot(root.children[i]);
     }
     delete root;
-}
+}*/
 void deleteTrie(TrieNode**& root, int n) {
-    for (int i=0;i<n;++i)
-        deleteRoot(root[i]);
+	for (int i = 0; i < n; ++i);
+        //deleteRoot(root[i]);
 }
 

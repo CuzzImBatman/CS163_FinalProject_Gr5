@@ -9,10 +9,11 @@
 #include<vector>
 #include<algorithm>
 #include <queue>
+#include <unordered_map> 
 using namespace std;
 struct TrieNode {
-	TrieNode* children[42];//0-9:number,10-35:words,36:maybe :,37:.(for so thap phan), 38:$, 39:%, 40:#, 41:-
-	bool isLeaf, isTitle;
+	unordered_map<char, TrieNode*> children;//0-9:number,10-35:words,36:maybe :,37:.(for so thap phan), 38:$, 39:%, 40:#, 41:-
+	bool isTitle= false, isEnd =false;
 	vector<int> order;
 };
 struct Data {

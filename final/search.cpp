@@ -12,7 +12,7 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 	if (cur) 
 	{
 		if (title && !cur->isTitle) return NULL;
-		if (cur->isLeaf) return cur;
+		if (cur->isEnd) return cur;
 	}
 	return NULL;
 }
@@ -94,8 +94,8 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 			pos = Sync(pos, searchRes->order);
 			score += searchRes->order.size();
 		}
-		if (wordSearch(stopword, tmp, false)) continue;
-		if (tmp == "AND" ) continue;
+		if (tmp == "AND" || wordSearch(stopword, tmp, false)) continue;
+		//.if (tmp == "AND" ) continue;
 		/**/
 		searchRes = wordSearch(root, tmp, false);
 		if (!searchRes) {

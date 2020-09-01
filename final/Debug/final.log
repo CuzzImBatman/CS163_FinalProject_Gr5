@@ -1,11 +1,10 @@
-﻿  Init.cpp
-D:\CS163_FinalProject_Gr5\final\Init.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\Init.cpp(125,20): warning C4018: '<': signed/unsigned mismatch
-  final.cpp
+﻿  final.cpp
 D:\CS163_FinalProject_Gr5\final\final.cpp(33,14): warning C4018: '>': signed/unsigned mismatch
-  function.cpp
-D:\CS163_FinalProject_Gr5\final\function.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
+  Init.cpp
+D:\CS163_FinalProject_Gr5\final\Init.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\Init.cpp(127,20): warning C4018: '<': signed/unsigned mismatch
   search.cpp
+  function.cpp
+D:\CS163_FinalProject_Gr5\final\function.cpp(55,20): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
-  LINK : D:\CS163_FinalProject_Gr5\final\Debug\final.exe not found or not built by the last incremental link; performing full link
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe

@@ -6,11 +6,7 @@ bool Is_empty(ifstream& in)
 TrieNode* Engine::getNode() {
 	TrieNode* pNode = NULL;
 	pNode = new TrieNode;
-	if (pNode) {
-		pNode->isLeaf = false;
-		pNode->isTitle = false;
-		for (int i = 0; i < 42; ++i) pNode->children[i] = NULL;
-	}
+
 	return pNode;
 }
 string Engine::NumberToString(int num) {
