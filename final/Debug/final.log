@@ -1,10 +1,14 @@
-﻿  final.cpp
-D:\CS163_FinalProject_Gr5\final\final.cpp(33,14): warning C4018: '>': signed/unsigned mismatch
-  Init.cpp
+﻿  Init.cpp
 D:\CS163_FinalProject_Gr5\final\Init.cpp(14,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\Init.cpp(127,20): warning C4018: '<': signed/unsigned mismatch
-  search.cpp
+  final.cpp
+D:\CS163_FinalProject_Gr5\final\final.cpp(33,14): warning C4018: '>': signed/unsigned mismatch
   function.cpp
 D:\CS163_FinalProject_Gr5\final\function.cpp(55,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(99,21): warning C4018: '<': signed/unsigned mismatch
+  search.cpp
+D:\CS163_FinalProject_Gr5\final\search.cpp(107,6): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'char' can equal the given constant
+D:\CS163_FinalProject_Gr5\final\search.cpp(183,16): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\search.cpp(190,11): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
+D:\CS163_FinalProject_Gr5\final\search.cpp(199): warning C4715: 'searchRange': not all control paths return a value
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe

@@ -14,7 +14,7 @@ void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenam
 	for (int i = 0; i < filenames.size(); i++)	root[i] =new TrieNode;
 	//for (int i = 0; i < MAX; i++)	root[i] = new TrieNode;
 
-	InputListFile(root, filenames);
+	InputFiles(root, filenames);
 	LoadStopword(stopword);
 
 }
@@ -91,9 +91,10 @@ void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
 	for (int i = 0; i < length; ++i) {
 		index = convert(key[i]);
 		if (index == -1) continue;
-		char x = key[i];
-		if (cur->children.find(x) == cur->children.end())
-			cur->children[x] = getNode();
+
+		if (cur->children.find(index) == cur->children.end())
+			cur->children[index] = getNode();
+		cur = cur->children[index];
 	}
 	
 	cur->isEnd = true;
@@ -106,7 +107,9 @@ void Engine::InsertStopword(TrieNode*& root, string key) {
 	for (int i = 0; i < length; ++i) {
 		index = convert(key[i]);
 		if (index == -1) continue;
-		if (!cur->children[index]) cur->children[index] = getNode();
+		
+		if (cur->children.find(index) == cur->children.end())
+			cur->children[index] = getNode();
 		cur = cur->children[index];
 	}
 	cur->isEnd = true;
@@ -122,9 +125,11 @@ void Engine::LoadStopword(TrieNode*& root) {
 	}
 	file.close();
 }
-void Engine::InputListFile(TrieNode**& root, vector<string>& filenames) {
+void Engine::InputFiles(TrieNode**& root, vector<string>& filenames) {
 	ifstream file;
-	for (int i = 0; i < filenames.size(); ++i) {
+	//for (int i = 0; i < filenames.size(); ++i) 
+	for (int i = 0; i < MAX; ++i) 
+	{
 		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\"+filenames[i]);
 		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }
 		//cout << filenames[i] << endl;

@@ -48,7 +48,7 @@ bool Engine::valid(char& key) {
 	if (key == ' ' || key == '$' || key == '%' || key == '#' || key == '-') return true;
 	return false;
 }
-vector<string> Engine::getSyn(string sen) {
+vector<string> Engine::getSyno(string sen) {
 	vector<string> res;
 	res.push_back(sen);
 	if (sen[0] >= 'a' && sen[0] <= 'z') sen[0] -= 32;
@@ -82,6 +82,24 @@ vector<string> Engine::getSyn(string sen) {
 }
 bool Engine::checkOperator(string query) {
 	
+	stringstream line(query);
+	string cur;
+	while (line >> cur)
+	{
+		if (
+			cur.substr(0, 8) == "intitle:" 
+			|| cur == "AND"
+			|| cur == "OR"
+			|| cur[0] == '-'
+			|| cur == "*"
+			|| cur == "filetype:txt"
+			|| cur[0] == '"'
+			)
+			return false;
+		for (int i = 0; i < cur.length() - 2; ++i)
+			if (cur[i] == '.'&& cur[i + 1] == '.')return false;
+		
+	}
 	return true;
 }
 vector<int> Engine::Sync(vector<int>& local1, vector<int>& local2) {

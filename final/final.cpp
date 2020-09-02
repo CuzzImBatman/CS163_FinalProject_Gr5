@@ -44,20 +44,17 @@ int main()
 		bool check = search.checkOperator(query);
 		priority_queue <Data>first, final;
 		int Output = 0;
+		//for (int i = 0; i < filenames.size(); i++)
 		for (int i = 0; i < MAX; i++)
 			{
 			Data store;
-				if (check) 
+				if (check && search.rootSearch(root[i], '"' + query + '"', stopword, store.pos, store.score))
 				{
-					if (search.rootSearch(root[i], '"' + query + '"', stopword, store.pos, store.score))
-					{
 						++Output;
 						store.filename = filenames[i];
-						first.push(store);
-						continue;
-					}
+						first.push(store);	
 				}
-				if (search.rootSearch(root[i], query, stopword, store.pos, store.score))
+				else if (search.rootSearch(root[i], query, stopword, store.pos, store.score))
 				{
 					++Output;
 					store.filename = filenames[i];
@@ -73,13 +70,14 @@ int main()
 		while (first.size())
 		{
 			Data output = first.top();
-			cout << output.score << endl;
+			cout << output.filename << " " << output.score << endl;
 			first.pop();
 		}
+
 		while (final.size())
 		{
 			Data output = final.top();
-			cout << output.score << endl;
+			cout <<output.filename<< " "<< output.score << endl;
 			final.pop();
 		}
 		
