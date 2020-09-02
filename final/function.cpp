@@ -117,30 +117,40 @@ vector<int> Engine::Sync(vector<int>& local1, vector<int>& local2) {
 	while (j < size2) sync.push_back(local2[j++]);
 	return sync;
 }
-void viewHistory(string query, vector<string> &history){
-    ifstream in;
-    in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
-    if (!in) {
-        cout <<"Cannot open file History !\n";
-        in.close();
-        return;
+void viewHistory(string query, vector<string> &history) {
+	bool existQuery = false;
+    ifstream in("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
+    if (!in.is_open()) {
+        cout <<"Cannot open file History!\n";
     }
-	cout << "suggestion: " << endl;
-    string tmp; int i=1;
-    while (!in.eof()){
-        getline(in, tmp);
-		if (tmp == query || tmp.find(query) == -1) continue;
-
-		history.push_back(tmp);
-		cout<<i++<<". "<<tmp<<endl;
-    }
-	in.close();
-	ofstream out;
-	out.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
-	out << query << endl;
-	out.close();
-	
-    
+	else {
+		cout << "Suggestion: " << endl;
+		string tmp; int i = 1;
+		while (!in.eof()) {
+			getline(in, tmp);
+			if (tmp == query || tmp.find(query) != -1) {
+				existQuery = true;
+				continue;
+			}
+			history.push_back(tmp);
+			cout << i++ << ". " << tmp << endl;
+		}
+		in.close();
+	}
+	if (!existQuery) {
+		ofstream out("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
+		if (!out.is_open()) {
+			cout << "(history not updated)" << endl;
+			return;
+		}
+		out << query << endl;
+		out.close();
+	}
+}
+void clearHistory() {
+	ofstream ofs("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", ofstream::out | ofstream::trunc);
+	if (ofs.is_open())
+		ofs.close();
 }
 void Engine::takeLocal(vector<int>& res1, vector<int>& res2, int cnt, vector<int>& place1, vector<int>& place2) {//Khanh
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();

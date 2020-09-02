@@ -16,7 +16,7 @@ int main()
 		cin.ignore();
 		if (!choice) break;
 		if (choice == 2) {
-			//clearHistory();
+			clearHistory();
 			continue;
 		}
 		string query;
@@ -28,10 +28,11 @@ int main()
 		if (choice)
 		{
 			vector<string>list;
-		viewHistory(query, list);
-		cin >> choice;
-		if (choice > list.size()-1)cout << "Invalid input" << endl;
-		query = list[choice];
+			viewHistory(query, list);
+			cin >> choice;
+			if (choice > list.size()-1)
+				cout << "Invalid input" << endl;
+			query = list[choice - 1];
 		}
 		else
 		{
