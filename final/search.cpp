@@ -16,13 +16,25 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 	}
 	return NULL;
 }
-bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<int>& pos, int& score) {// score=0 initially
+TrieNode* Engine::synonSearch(TrieNode* root, string key)
+{
+	vector<string>store = getSynon(key.substr(1));
+	TrieNode* synon=getNode();
+	for (int i = 0; i < store.size(); i++)
+	{
+		TrieNode* cur = wordSearch(root, store[i],false);
+		if (!cur)continue;
+		synon->order = Sync(synon->order, cur->order);
+	}
+	return synon;
+}
+bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector<local>& pos, int& score) {// score=0 initially
 	stringstream ss(query);
 	string cur, get;
 	while (ss >> cur)
 	{
 		if (cur[0] == '"') {
-			vector<int> local;
+			vector<local> Local;
 			TrieNode* res1 = wordSearch(root, cur, false), * res2;
 			if (!res1) return false;
 			if (cur.back() == '"')
@@ -32,7 +44,7 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 				continue;
 			}
 			string cur2;
-			vector<int> tmp = res1->order;
+			vector<local> tmp = res1->order;
 			while (ss >> cur2) {
 				int cnt = 1;
 				if (cur2 == "") return true;
@@ -45,18 +57,18 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 				}
 				res2 = wordSearch(root, cur2, false);
 				if (!res2) return false;
-				vector<int> out1, out2;
+				vector<local> out1, out2;
 				takeLocal(tmp, res2->order, cnt, out1, out2);
 				if (out1.empty()) return false;
-				vector<int > carry = Sync(out1, out2);
-				local=Sync(local, carry) ;
+				vector<local > carry = Sync(out1, out2);
+				Local=Sync(Local, carry) ;
 				if (cur2.back() == '"') {
 					score += out1.size();
 					break;
 				}
 				tmp = out2;
 			}
-			pos = Sync(pos, local);
+			pos = Sync(pos, Local);
 			continue;
 		}
 		
@@ -65,13 +77,21 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 			get = cur.substr(8);
 			TrieNode* title = wordSearch(root, get, true);
 			if (!title) return false;
-			score += title->order.size();
+			
 			pos = Sync(pos, title->order);
+			score = 0;
+			while (score < pos.size())
+				if (pos[score].isTitle)score++;
+				else break;
+
 			while (ss >> get) {
 				title = wordSearch(root, get, true);
 				if (!title) return false;
-				score += title->order.size();
 				pos = Sync(pos, title->order);
+				score = 0;
+				while (score < pos.size())
+					if (pos[score].isTitle)score++;
+					else break;
 			}
 			continue;
 		}
@@ -79,26 +99,27 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 			if (wordSearch(root, cur.substr(1), false)) return false;
 			continue;
 		}
+		if (cur == "AND" || wordSearch(stopword, cur, false)) continue;
 		TrieNode* searchRes;
 		if (cur == "OR") {
 			ss >> cur;
 			searchRes = wordSearch(root, cur, false);
 			if (searchRes) {
 				pos = Sync(pos, searchRes->order);
-				score += searchRes->order.size();
+				score = pos.size();
 			}
 			continue;
 		}
-		searchRes = wordSearch(root, cur, false);
+		if (cur[0] == '~')searchRes = synonSearch(root, cur);
+		else searchRes = wordSearch(root, cur, false);
 		if (cur[0] == '+') {
 			if (!searchRes) return false;
 			pos = Sync(pos, searchRes->order);
-			score += searchRes->order.size();
+			score = pos.size();
 		}
-		if (cur == "AND" || wordSearch(stopword, cur, false)) continue;
 		
 		/*if (tmp.back() == '*') {
-			vector<int> res;
+			vector<local> res;
 			searchIncomplete(root, tmp, res);
 			if (res.empty()) return false;
 			pos = Sync(pos, res);
@@ -107,7 +128,7 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 		if (isNumber(cur[0]) == '$' || cur[0] ) {
 			double lowbound, upbound;
 			if (searchRange(cur, lowbound, upbound)) {
-				string number="";  vector<int> local;
+				string number="";  vector<local> local;
 				if (cur[0] == '$') {
 					if (!root->children[38]) return false;
 					numberSearch(root->children[38], number, lowbound, upbound, local,score);
@@ -120,16 +141,16 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 				continue;
 			}
 		}
-		searchRes = wordSearch(root, cur, false);
 		if (!searchRes) {
 			bool check = false;
 			while (ss >> cur) {
 				if (cur == "OR") {
 					ss >> cur;
-					searchRes = wordSearch(root, cur, false);
+					if (cur[0] == '~')searchRes = synonSearch(root, cur);
+					else searchRes = wordSearch(root, cur, false);
 					if (searchRes) {
 						pos = Sync(pos, searchRes->order);
-						score += searchRes->order.size();
+						score = pos.size();
 						check = true;
 						break;
 					}
@@ -140,12 +161,12 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, vector
 		}
 		else {
 			pos = Sync(pos, searchRes->order);
-			score += searchRes->order.size();
+			score = pos.size();
 		}
 	}
 	return true;
 }
-void Engine::numberSearch(TrieNode* root, string number, double lowbound, double upbound, vector<int>& local, int& score)
+void Engine::numberSearch(TrieNode* root, string number, double lowbound, double upbound, vector<local>& local, int& score)
 {
 	double comp;
 	if (number!="" && number.back() == '.')
@@ -160,12 +181,12 @@ void Engine::numberSearch(TrieNode* root, string number, double lowbound, double
 	{
 		local = Sync(local, root->order);
 		score += root->order.size();
-		return;
+		
 	}
 
 	for (int i = 0; i <= 10; ++i)
 	{
-		if (i == 10)i += 37;
+		if (i == 10)i = 37;
 		if (root->children[i])
 		{
 			char add;
@@ -195,5 +216,5 @@ bool searchRange(string tmp, double& lowbound, double& upbpound)
 	}
 	lowbound = atof(l.c_str());
 	upbpound = atof(r.c_str());
-
+	return true;
 }

@@ -42,12 +42,14 @@ int main()
 		//vector<string> synonyms;
 		//if (query[0] == '~') synonyms = search.getSyn(query.substr(1));
 		bool check = search.checkOperator(query);
+		query = wash(query);
 		priority_queue <Data>first, final;
 		int Output = 0;
 		//for (int i = 0; i < filenames.size(); i++)
 		for (int i = 0; i < MAX; i++)
 			{
 			Data store;
+			if(filenames[i]=="Group05News26.txt")
 				if (check && search.rootSearch(root[i], '"' + query + '"', stopword, store.pos, store.score))
 				{
 						++Output;
@@ -67,17 +69,33 @@ int main()
 			cout << first[i].filename << endl;
 		for (int i = 0; i < final.size(); i++)
 			cout << final[i].filename << endl;*/
+	
 		while (first.size())
 		{
 			Data output = first.top();
-			cout << output.filename << " " << output.score << endl;
+			if (output.filename == "Group05News26.txt")
+			{
+				cout << output.filename << endl;
+			search.outputRes(output);
+			cout << endl << "Point: " << output.score << endl;
+		     }
 			first.pop();
+		
+		
+			
 		}
 
 		while (final.size())
 		{
 			Data output = final.top();
-			cout <<output.filename<< " "<< output.score << endl;
+			if (output.filename == "Group05News26.txt")
+			{
+				cout << output.filename << endl;
+				search.outputRes(output);
+				makeColor(14);
+				cout << "Point: " << output.score << endl;
+				makeColor(7);
+			}
 			final.pop();
 		}
 		
