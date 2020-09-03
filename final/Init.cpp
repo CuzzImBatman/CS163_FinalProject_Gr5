@@ -2,7 +2,7 @@
 
 void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenames) {
 	ifstream in;
-	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\___index.txt");
+	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\text.txt");
 	if (!in.is_open())cout << "cannot" << endl;
 	while (!Is_empty(in))
 	{
@@ -19,6 +19,54 @@ void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenam
 
 }
 void Engine::InputFile(TrieNode*& root, ifstream& file)
+{
+	int start = 0;
+	string sentence;
+	getline(file, sentence, '\n');
+	InputSentence(root, sentence, start, true);//a trie for the inside title, true means title:
+	bool remain = false;
+	while (!Is_empty(file)) {
+
+		if (!remain)getline(file, sentence, '.');
+
+		if (sentence.length() && isNumber(sentence.back()))
+		{
+			string next;
+			getline(file, next, '.');
+			if (next.length() && isNumber(next[0]))
+			{
+				sentence = sentence + '.' + next;
+				if (isNumber(next.back()))remain = true;
+				else
+				{
+					InputSentence(root, sentence, start, false);
+					remain = false;
+				}
+			}
+			else
+			{
+				InputSentence(root, sentence, start, false);
+				if (next.length() && isNumber(next.back()))
+				{
+					remain = true; 
+					sentence = next;
+				}
+				else
+				{
+					InputSentence(root, next, start, false);
+					remain = false;
+				}
+
+			}
+		}
+		
+		else InputSentence(root, sentence, start, false);
+		if (Is_empty(file))
+			InputSentence(root, sentence, start, false);
+
+	}
+}
+/*void Engine::InputFile(TrieNode*& root, ifstream& file)
 {
 	int start = 0;
 	string sentence;
@@ -60,9 +108,9 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 		else InputSentence(root, sentence, start, false);
 
 	}
-}
+}*/
 void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid) {//start:place to start sentence
-	sentence = SenFilter(sentence);
+	sentence = SenFilter(sentence,false);
 	if (!root) return;
 	stringstream ss(sentence);
 	while (ss >> sentence) {
@@ -71,12 +119,12 @@ void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool va
 		++start;
 	}
 }
-string Engine::SenFilter(string sen) {
+string Engine::SenFilter(string sen,bool state) {
 	string res;
 	int length = sen.length();
 	for (int i = 0; i < length; ++i) {
-		if (!valid(sen[i])) {
-			if (sen[i] == 39 && sen[i + 1] == 's' && sen[i + 2] == ' ') ++i;
+		if (!valid(sen[i],state)) {
+			if (sen[i] == 39 && i <= length - 3  &&sen[i + 1] == 's' && sen[i + 2] == ' ') i++;
 			else if (i + 1 != length && sen[i] == '.' && isNumber(sen[i - 1]) && isNumber(sen[i + 1]))//so thap phan
 				res.append(sen, i, 1);
 		}
@@ -86,19 +134,31 @@ string Engine::SenFilter(string sen) {
 }
 
 void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
-	TrieNode* cur = root;
+	TrieNode* cur = root, *pre=cur;
 	int index, length = key.length();
 	for (int i = 0; i < length; ++i) {
 		index = convert(key[i]);
 		if (index == -1) continue;
-
+		/*if (index == 39)
+		{
+			TrieNode* carry = cur;
+			cur = pre;
+			cur->isEnd = true;
+			local tmp = { place,valid };
+			pre->order.push_back(tmp);
+			if (valid) cur->isTitle = true;
+			pre = cur;
+			cur = carry;
+		}*/
 		if (cur->children.find(index) == cur->children.end())
 			cur->children[index] = getNode();
+		//pre = cur;
 		cur = cur->children[index];
 	}
 	
 	cur->isEnd = true;
-	cur->order.push_back(place);
+	local tmp = { place,valid };
+	cur->order.push_back(tmp);
 	if (valid) cur->isTitle = true;
 }
 void Engine::InsertStopword(TrieNode*& root, string key) {
@@ -117,7 +177,7 @@ void Engine::InsertStopword(TrieNode*& root, string key) {
 void Engine::LoadStopword(TrieNode*& root) {
 	ifstream file;
 	string word;
-	file.open("stopword.txt");
+	file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\stopword.txt");
 	if (!file.is_open()) return;
 	while (!file.eof()) {
 		getline(file, word);
