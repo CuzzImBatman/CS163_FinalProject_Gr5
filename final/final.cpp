@@ -4,8 +4,10 @@
 int main()
 {
 	Engine search;
-	TrieNode*** root, * stopword = search.getNode();
-	search.Init(root, stopword);
+	vector<string> filenames;
+	TrieNode* root, * stopword = search.getNode();
+	search.Init(root, stopword, filenames);
+
 }
 
 //

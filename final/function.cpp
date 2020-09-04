@@ -20,30 +20,30 @@ string Engine::NumberToString(int num) {
 	if (num < 10)return '0'+ ss.str();
 	return ss.str();
 }
-void Engine::Init(TrieNode***& root, TrieNode*& stopword) {
-	root = new TrieNode * *[15];
-	for (int i = 0; i < 26; ++i) 
-		if(i==25)root[i] = new TrieNode * [MAX];
-		 else root[i] = new TrieNode * [100];
+void Engine::Init(TrieNode*& root, TrieNode*& stopword, vector<string>& filenames) {
+	ifstream in;
+	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\___index.txt");
+	if (!in.is_open())cout << "cannot" << endl;
+	while (!Is_empty(in))
+	{
+		string tmp;
+		getline(in, tmp);
+		filenames.push_back(tmp);
+	}
 	
-	for (int i = 0; i < 26; ++i)
-		if (i != 25)
-			for (int j = 0; j < 100; ++j) root[i][j] = getNode();
-		else
-			for (int j = 0; j < MAX; ++j)root[i][j] = getNode();
-		
-	
-	
-	InputListFile(root);
+		root = getNode();
+	//for (int i = 0; i < MAX; i++)	root[i] = new TrieNode;
+
+	InputListFile(root, filenames);
 	LoadStopword(stopword);
 	
 }
-void Engine::InputFile(TrieNode*& root, ifstream& file)
+void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos)
 {
 	int start = 0;
 	string sentence; 
 	getline(file, sentence,'\n');
-	InputSentence(root, sentence, start, true);//a trie for the inside title, true means title:
+	InputSentence(root, sentence, start, true, filePos);//a trie for the inside title, true means title:
 	bool remain = false;
 	while (!Is_empty(file)) {
 		
@@ -65,29 +65,29 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 				if(isNumber(next.back()))remain = true;
 				else
 				{
-					InputSentence(root, sentence, start, false);
+					InputSentence(root, sentence, start, false, filePos);
 					remain = false;
 				}
 			}
 			else
 			{
-				InputSentence(root, sentence, start, false);
-				InputSentence(root, next, start, false);
+				InputSentence(root, sentence, start, false, filePos);
+				InputSentence(root, next, start, false, filePos);
 				remain = false;
 				
 			}
 		}
-		else InputSentence(root, sentence, start, false);
+		else InputSentence(root, sentence, start, false, filePos);
 		
 	}
 }
-void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid) {//start:place to start sentence
+void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid,int filePos) {//start:place to start sentence
 	sentence = SenFilter(sentence);
 	if (!root) return;
 	stringstream ss(sentence);
 	while (ss >> sentence) {
-		if (valid) insertWord(root, sentence, start, true);
-		else insertWord(root, sentence, start, false);
+		if (valid) insertWord(root, sentence, start, true, filePos);
+		else insertWord(root, sentence, start, false, filePos);
 		++start;
 	}
 }
@@ -124,7 +124,7 @@ bool Engine::valid(char& key) {
 	if (key == ' ' || key == '$' || key == '%' || key == '#' || key == '-') return true;
 	return false;
 }
-void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
+void Engine::insertWord(TrieNode*& root, string key, int place, bool valid,int filePos) {
 	TrieNode* cur = root;
 	int index, length = key.length();
 	for (int i = 0; i < length; ++i) {
@@ -134,7 +134,9 @@ void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
 		cur = cur->children[index];
 	}
 	cur->isLeaf = true;
-	cur->order.push_back(place);
+	if (cur->filePos.empty())cur->filePos.push_back(filePos);
+	else if (cur->filePos.back() < filePos)cur->filePos.push_back(filePos);
+	cur->loca[filePos].push_back(place);
 	if (valid) cur->isTitle = true;
 }
 void Engine::InsertStopword(TrieNode*& root, string key) {
@@ -159,21 +161,16 @@ void Engine::LoadStopword(TrieNode*& root) {
 	}
 	file.close();
 }
-void Engine::InputListFile(TrieNode***& root) {
+void Engine::InputListFile(TrieNode*& root, vector<string>& filenames) {
 	ifstream file;
-	for (int i = 1; i <= 26; ++i)
+	for (int i = 0; i < filenames.size(); ++i) 
+	//r (int i = 0; i < MAX; ++i)
 	{
-		int limit = 100;
-		if (i == 26)limit = MAX;
-
-			for (int j = 1; j <= limit; ++j) {
-				string filename = OpenFile(i, j);
-				file.open(filename);
-				if (!file.is_open()) { cout << "Cannot open file " << filename << endl; continue; }
-				cout << i << " " << j << endl;
-				InputFile(root[i - 1][j - 1], file);
-				file.close();
-			}
+		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" + filenames[i]);
+		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }
+		cout << filenames[i] << endl;
+		InputFile(root, file,i);
+		file.close();
 	}
 	
 }
