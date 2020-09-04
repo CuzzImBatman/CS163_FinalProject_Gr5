@@ -9,7 +9,7 @@ TrieNode* Engine::getNode() {
 	if (pNode) {
 		pNode->isLeaf = false;
 		pNode->isTitle = false;
-		for (int i = 0; i < 42; ++i) pNode->children[i] = NULL;
+		
 	}
 	return pNode;
 }
