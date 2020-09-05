@@ -123,29 +123,41 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 }
 void viewHistory(string query, vector<string> &history){
     ifstream in;
-    in.open("final/Search Engine-Data/history.txt");
+    in.open("D:\\CS163_FinalProject_Gr5\\final\\history.txt");
     if (!in) {
         cout <<"Cannot open file History !\n";
         in.close();
         return;
     }
-	cout << "suggestion: " << endl;
+	cout << "SUGGESTION: " << endl;
     string tmp; int i=1;
-    while (!in.eof()){
+	lowCase(query);
+    while (!Is_empty(in)){
         getline(in, tmp);
-		if (tmp == query || tmp.find(query) == -1)continue;
+		string cmp = tmp; lowCase(cmp);
+		if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
 		
             history.push_back(tmp);
             cout<<i++<<". "<<tmp<<endl;
-        
     }
 	in.close();
-	ofstream out;
+	/*ofstream out;
 	out.open("final/Search Engine-Data/history.txt");
 	out << query << endl;
-	out.close();
+	out.close();*/
 	
     
+}
+void lowCase(string &sen)
+{
+	for (int i = 0; i < sen.length(); i++)
+		if (sen[i] >= 'A' && sen[i] <= 'Z')sen[i] += 32;
+	int i = 0;
+	while (sen[sen.length()-1-i] == ' ')i++;
+	sen.erase(sen.length() - 1 - i, i);
+	i = 0;
+	while (sen[i] == ' ')i++;
+	sen.erase(0, i);
 }
 void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {//Khanh
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
@@ -303,7 +315,7 @@ int wordsNum(string sen)
 	while (ss >> tmp)num++;
 	return num;
 }
-void Up(string word)
+void Up(string &word)
 {
 	for (int i = 0; i < word.length(); i++)
 		if (word[i] >= 'a' && word[i] <= 'z')word[i] -= 32;

@@ -40,17 +40,19 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 	}
 	return NULL;
 }
-TrieNode* Engine::IncompleteSearch(TrieNode* root, string key,int x, bool title)
+TrieNode* Engine::IncompleteSearch(TrieNode* root, string key, int x, bool title)
 {
-	TrieNode* res = wordSearch(root, key.substr(x + 1), title);
-	 
+	TrieNode* res;
+	if (x == key.length())
+		res = wordSearch(root, "", title);
+	else res = wordSearch(root, key.substr(x + 1), title);
+
 	for (int i = 0; i < 42; i++)
 		if (root->children[i])
-			res = Unify(res, wordSearch(root->children[i], key.substr(x + 1), title));
-		
+			if (x == key.length())
+				res = Unify(res, wordSearch(root->children[i], "", title));
+			else res = Unify(res, wordSearch(root->children[i], key.substr(x + 1), title));
 	return res;
-	
-
 }
 vector<local> searchTrue(vector<local> pos)
 {

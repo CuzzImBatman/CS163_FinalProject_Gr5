@@ -29,8 +29,13 @@ int main()
 		{
 			vector<string>list;
 			viewHistory(query, list);
+			if (list.empty())
+			{
+				cout << "No suggestion!";
+				continue;
+			}
 			cin >> choice;
-			if (choice > list.size() - 1)cout << "Invalid input" << endl;
+			if (choice > list.size())cout << "Invalid input" << endl;
 			query = list[choice];
 		}
 		else
@@ -61,7 +66,7 @@ int main()
 		}
 
 
-		cout << final->place[final->filePos[0].pos].size() << endl;
+		//cout << final->place[final->filePos[0].pos].size() << endl;
 		//sort(first->filePos.begin(), first->filePos.end(),
 			/*	while (first.size())
 				{
@@ -95,6 +100,8 @@ int main()
 
 
 	}
+	search.deleteTrie(root);
+	search.deleteTrie(stopword);
 }
 
 //
