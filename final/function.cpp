@@ -312,7 +312,7 @@ void makeColor(int color)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
-string wash(string sen)
+string filter(string sen)
 {
 	string res;
 	int length = sen.length();
@@ -325,4 +325,49 @@ string wash(string sen)
 		else res.append(sen, i, 1);//get 1 
 	}
 	return res;
+}
+void Engine::posFilter(TrieNode* word1, TrieNode* word2,int cnt, TrieNode*& pos1, TrieNode*& pos2)
+{
+	pos1 = getNode();
+	pos2 = getNode();
+	vector<local> tmp, filePos; 
+	takeLocal(word1->filePos, word2->filePos, 0, filePos, tmp);
+	int i = 0;
+	while (i < filePos.size())
+	{
+		takeLocal(word1->place[filePos[i].pos], word2->place[filePos[i].pos], cnt, pos1->place[filePos[i].pos], pos2->place[filePos[i].pos]);
+		i++;
+	}
+	if (!pos1->place.size())
+		return;
+	pos1->filePos = filePos;
+	pos2->filePos = filePos;
+	
+
+	
+}
+TrieNode* Engine:: Unify(TrieNode* word1, TrieNode* word2)
+{
+	TrieNode* res = getNode();
+	res->filePos = Sync(word1->filePos, word2->filePos);
+	int i = 0;
+	while (i < res->filePos.size())
+	{
+		res->place[res->filePos[i].pos] = 
+			Sync(word1->place[res->filePos[i].pos], word2->place[res->filePos[i].pos]);
+		i++;
+	}
+	return res;
+}
+void Engine::deleteTrie(TrieNode*& root)
+{
+	for (int i = 0; i < 42; i++)
+		if (root->children[i])
+		{
+			deleteTrie(root->children[i]);
+			root->children[i] = NULL;
+			delete root->children[i];
+		}
+
+	delete root;
 }
