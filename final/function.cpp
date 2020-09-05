@@ -144,7 +144,7 @@ void viewHistory(string query, vector<string> &history) {
 	if (!existQuery) {
 		ofstream out("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
 		if (!out.is_open()) {
-			cout << "(history not updated)" << endl;
+			cout << "(history cannot be updated with the current query)" << endl;
 			return;
 		}
 		out << query << endl;
