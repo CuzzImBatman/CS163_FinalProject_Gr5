@@ -1,8 +1,9 @@
 #include "function.h"
 
-void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenames) {
+void Engine::Init(TrieNode*& root, TrieNode*& stopword, vector<string>& filenames) {
 	ifstream in;
-	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\text.txt");
+	//in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\text.txt");
+	in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\___index.txt");
 	if (!in.is_open())cout << "cannot" << endl;
 	while (!Is_empty(in))
 	{
@@ -10,20 +11,19 @@ void Engine::Init(TrieNode**& root, TrieNode*& stopword, vector<string>& filenam
 		getline(in, tmp);
 		filenames.push_back(tmp);
 	}
-	root = new TrieNode * [filenames.size()];
-	for (int i = 0; i < filenames.size(); i++)	root[i] =new TrieNode;
-	//for (int i = 0; i < MAX; i++)	root[i] = new TrieNode;
+	root = new TrieNode ;
+	
 
 	InputFiles(root, filenames);
 	LoadStopword(stopword);
 
 }
-void Engine::InputFile(TrieNode*& root, ifstream& file)
+void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos)
 {
 	int start = 0;
 	string sentence;
 	getline(file, sentence, '\n');
-	InputSentence(root, sentence, start, true);//a trie for the inside title, true means title:
+	InputSentence(root, sentence, start, true,  filePos);//a trie for the inside title, true means title:
 	bool remain = false;
 	while (!Is_empty(file)) {
 
@@ -39,13 +39,13 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 				if (isNumber(next.back()))remain = true;
 				else
 				{
-					InputSentence(root, sentence, start, false);
+					InputSentence(root, sentence, start, false, filePos);
 					remain = false;
 				}
 			}
 			else
 			{
-				InputSentence(root, sentence, start, false);
+				InputSentence(root, sentence, start, false, filePos);
 				if (next.length() && isNumber(next.back()))
 				{
 					remain = true; 
@@ -53,16 +53,16 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 				}
 				else
 				{
-					InputSentence(root, next, start, false);
+					InputSentence(root, next, start, false, filePos);
 					remain = false;
 				}
 
 			}
 		}
 		
-		else InputSentence(root, sentence, start, false);
+		else InputSentence(root, sentence, start, false, filePos);
 		if (Is_empty(file))
-			InputSentence(root, sentence, start, false);
+			InputSentence(root, sentence, start, false, filePos);
 
 	}
 }
@@ -109,13 +109,13 @@ void Engine::InputFile(TrieNode*& root, ifstream& file)
 
 	}
 }*/
-void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid) {//start:place to start sentence
+void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid,int filePos) {//start:place to start sentence
 	sentence = SenFilter(sentence,false);
 	if (!root) return;
 	stringstream ss(sentence);
 	while (ss >> sentence) {
-		if (valid) insertWord(root, sentence, start, true);
-		else insertWord(root, sentence, start, false);
+		if (valid) insertWord(root, sentence, start, true, filePos);
+		else insertWord(root, sentence, start, false, filePos);
 		++start;
 	}
 }
@@ -133,32 +133,28 @@ string Engine::SenFilter(string sen,bool state) {
 	return res;
 }
 
-void Engine::insertWord(TrieNode*& root, string key, int place, bool valid) {
+void Engine::insertWord(TrieNode*& root, string key, int place, bool valid, int filePos) {
 	TrieNode* cur = root, *pre=cur;
 	int index, length = key.length();
 	for (int i = 0; i < length; ++i) {
 		index = convert(key[i]);
 		if (index == -1) continue;
-		/*if (index == 39)
-		{
-			TrieNode* carry = cur;
-			cur = pre;
-			cur->isEnd = true;
-			local tmp = { place,valid };
-			pre->order.push_back(tmp);
-			if (valid) cur->isTitle = true;
-			pre = cur;
-			cur = carry;
-		}*/
+		
 		if (cur->children.find(index) == cur->children.end())
 			cur->children[index] = getNode();
-		//pre = cur;
+		
 		cur = cur->children[index];
 	}
 	
 	cur->isEnd = true;
-	local tmp = { place,valid };
+	local tmp = { filePos,valid };
+	if (cur->filePos.empty())cur->filePos.push_back(tmp);
+	else if (cur->filePos.back().pos < filePos)cur->filePos.push_back(tmp);
+	tmp = { place,valid };
+	cur->place[filePos].push_back(tmp);
+	
 	cur->order.push_back(tmp);
+
 	if (valid) cur->isTitle = true;
 }
 void Engine::InsertStopword(TrieNode*& root, string key) {
@@ -185,28 +181,19 @@ void Engine::LoadStopword(TrieNode*& root) {
 	}
 	file.close();
 }
-void Engine::InputFiles(TrieNode**& root, vector<string>& filenames) {
+void Engine::InputFiles(TrieNode*& root, vector<string>& filenames) {
 	ifstream file;
 	//for (int i = 0; i < filenames.size(); ++i) 
-	for (int i = 0; i < MAX; ++i) 
+	for (int i = 0; i < 1; ++i) 
 	{
 		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\"+filenames[i]);
 		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }
-		//cout << filenames[i] << endl;
-		InputFile(root[i], file);
+		cout << filenames[i] << endl;
+		InputFile(root, file,i);
 		file.close();
 	}
 }
 
-/*void deleteRoot(TrieNode *&root){
-    for (int i=0;i<42;++i){
-        if (root.children[i])
-            deleteRoot(root.children[i]);
-    }
-    delete root;
-}*/
-void deleteTrie(TrieNode**& root, int n) {
-	for (int i = 0; i < n; ++i);
-        //deleteRoot(root[i]);
-}
+
+
 

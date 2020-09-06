@@ -6,9 +6,9 @@ int main()
 {
 	Engine search;
 	vector<string> filenames;
-	TrieNode** root, * stopword = search.getNode();
+	TrieNode* root, * stopword = search.getNode();
 	search.Init(root, stopword, filenames);
-	while (1) {
+	while (true) {
 
 		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl;
 		int choice;
@@ -22,17 +22,22 @@ int main()
 		string query;
 		cout << "Query:";
 		getline(cin, query);
-		cout << "0. Search" << endl << "1. Display history suggestion" << endl ;
+		lowCase(query);
+		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
 		cin >> choice;
 		cin.ignore();
 		if (choice)
 		{
 			vector<string>list;
 			viewHistory(query, list);
+			if (list.empty())
+			{
+				cout << "No suggestion!";
+				continue;
+			}
 			cin >> choice;
-			if (choice > list.size()-1)
-				cout << "Invalid input" << endl;
-			query = list[choice - 1];
+			if (choice > list.size())cout << "Invalid input" << endl;
+			query = list[choice];
 		}
 		else
 		{
@@ -40,68 +45,64 @@ int main()
 			output << query << endl;
 			output.close();
 		}
-		//vector<string> synonyms;
-		//if (query[0] == '~') synonyms = search.getSyn(query.substr(1));
 		bool check = search.checkOperator(query);
-		query = wash(query);
-		priority_queue <Data>first, final;
+		query = filter(query);
+		//priority_queue <Data>first, final;
+		TrieNode* first, * final = search.getNode();
 		int Output = 0;
-		//for (int i = 0; i < filenames.size(); i++)
-		for (int i = 0; i < MAX; i++)
-			{
-			Data store;
-			if(filenames[i]=="Group05News26.txt")
-				if (check && search.rootSearch(root[i], '"' + query + '"', stopword, store.pos, store.score))
-				{
-						++Output;
-						store.filename = filenames[i];
-						first.push(store);	
-				}
-				else if (search.rootSearch(root[i], query, stopword, store.pos, store.score))
-				{
-					++Output;
-					store.filename = filenames[i];
-					final.push(store);
-				}
-			}
-		/*sort(first.begin(), first.end(), scoreCompare);
-		sort(final.begin(), final.end(), scoreCompare);
-		for (int i = 0; i < first.size(); i++)
-			cout << first[i].filename << endl;
-		for (int i = 0; i < final.size(); i++)
-			cout << final[i].filename << endl;*/
-	
-		while (first.size())
+
+		Data store;
+
+		if (check && search.rootSearch(root, '"' + query + '"', stopword, first))
 		{
-			Data output = first.top();
-			if (output.filename == "Group05News26.txt")
-			{
-				cout << output.filename << endl;
-			search.outputRes(output);
-			cout << endl << "Point: " << output.score << endl;
-		     }
-			first.pop();
-		
-		
-			
+			++Output;
+			//store.filename = filenames[i];
+			//first.push(store);
+		}
+		else if (search.rootSearch(root, query, stopword, final))
+		{
+			++Output;
+			//store.filename = filenames[i];
+			//final.push(store);
 		}
 
-		while (final.size())
-		{
-			Data output = final.top();
-			if (output.filename == "Group05News26.txt")
-			{
-				cout << output.filename << endl;
-				search.outputRes(output);
-				makeColor(14);
-				cout << "Point: " << output.score << endl;
-				makeColor(7);
-			}
-			final.pop();
-		}
-		
+
+		//cout << final->place[final->filePos[0].pos].size() << endl;
+		//sort(first->filePos.begin(), first->filePos.end(),
+			/*	while (first.size())
+				{
+					Data output = first.top();
+					if (output.filename == "Group05News26.txt")
+					{
+						cout << output.filename << endl;
+						search.outputRes(output);
+						cout << endl << "Point: " << output.score << endl;
+					}
+					first.pop();
+
+
+
+				}
+
+				while (final.size())
+				{
+					Data output = final.top();
+					if (output.filename == "Group05News26.txt")
+					{
+						cout << output.filename << endl;
+						search.outputRes(output);
+						makeColor(14);
+						cout << "Point: " << output.score << endl;
+						makeColor(7);
+					}
+					final.pop();
+				}*/
+
+
+
 	}
-	
+	search.deleteTrie(root);
+	search.deleteTrie(stopword);
 }
 
 //

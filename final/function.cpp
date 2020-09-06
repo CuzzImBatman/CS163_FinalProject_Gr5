@@ -121,40 +121,42 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 	while (j < size2) sync.push_back(local2[j++]);
 	return sync;
 }
-void viewHistory(string query, vector<string> &history) {
-	bool existQuery = false;
-    ifstream in("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
-    if (!in.is_open()) {
-        cout <<"Cannot open file History!\n";
+void viewHistory(string query, vector<string> &history){
+    ifstream in;
+    in.open("D:\\CS163_FinalProject_Gr5\\final\\history.txt");
+    if (!in) {
+        cout <<"Cannot open file History !\n";
+        in.close();
+        return;
     }
-	else {
-		cout << "Suggestion: " << endl;
-		string tmp; int i = 1;
-		while (!in.eof()) {
-			getline(in, tmp);
-			if (tmp == query || tmp.find(query) != -1) {
-				existQuery = true;
-				continue;
-			}
-			history.push_back(tmp);
-			cout << i++ << ". " << tmp << endl;
-		}
-		in.close();
-	}
-	if (!existQuery) {
-		ofstream out("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
-		if (!out.is_open()) {
-			cout << "(history cannot be updated with the current query)" << endl;
-			return;
-		}
-		out << query << endl;
-		out.close();
-	}
+	cout << "SUGGESTION: " << endl;
+    string tmp; int i=1;
+    while (!Is_empty(in)){
+        getline(in, tmp);
+		string cmp = tmp; lowCase(cmp);
+		if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
+		
+            history.push_back(tmp);
+            cout<<i++<<". "<<tmp<<endl;
+    }
+	in.close();
+	/*ofstream out;
+	out.open("final/Search Engine-Data/history.txt");
+	out << query << endl;
+	out.close();*/
+	
+    
 }
-void clearHistory() {
-	ofstream ofs("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", ofstream::out | ofstream::trunc);
-	if (ofs.is_open())
-		ofs.close();
+void lowCase(string &sen)
+{
+	for (int i = 0; i < sen.length(); i++)
+		if (sen[i] >= 'A' && sen[i] <= 'Z')sen[i] += 32;
+	int i = 0;
+	while (sen[sen.length()-1-i] == ' ')i++;
+	sen.erase(sen.length() - 1 - i, i);
+	i = 0;
+	while (sen[i] == ' ')i++;
+	sen.erase(0, i);
 }
 void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {//Khanh
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
@@ -277,7 +279,7 @@ void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string 
 	{
 		if (!local.empty() && local[0].pos == cur)
 		{
-			Up(sen);
+			upCase(sen);
 			for (int i = 0; i < sen.length(); i++)
 			{
 				
@@ -312,7 +314,7 @@ int wordsNum(string sen)
 	while (ss >> tmp)num++;
 	return num;
 }
-void Up(string word)
+void upCase(string &word)
 {
 	for (int i = 0; i < word.length(); i++)
 		if (word[i] >= 'a' && word[i] <= 'z')word[i] -= 32;
@@ -321,7 +323,7 @@ void makeColor(int color)
 {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
-string wash(string sen)
+string filter(string sen)
 {
 	string res;
 	int length = sen.length();
@@ -334,4 +336,49 @@ string wash(string sen)
 		else res.append(sen, i, 1);//get 1 
 	}
 	return res;
+}
+void Engine::posFilter(TrieNode* word1, TrieNode* word2,int cnt, TrieNode*& pos1, TrieNode*& pos2)
+{
+	pos1 = getNode();
+	pos2 = getNode();
+	vector<local> tmp, filePos; 
+	takeLocal(word1->filePos, word2->filePos, 0, filePos, tmp);
+	int i = 0;
+	while (i < filePos.size())
+	{
+		takeLocal(word1->place[filePos[i].pos], word2->place[filePos[i].pos], cnt, pos1->place[filePos[i].pos], pos2->place[filePos[i].pos]);
+		i++;
+	}
+	if (!pos1->place.size())
+		return;
+	pos1->filePos = filePos;
+	pos2->filePos = filePos;
+	
+
+	
+}
+TrieNode* Engine:: Unify(TrieNode* word1, TrieNode* word2)
+{
+	TrieNode* res = getNode();
+	res->filePos = Sync(word1->filePos, word2->filePos);
+	int i = 0;
+	while (i < res->filePos.size())
+	{
+		res->place[res->filePos[i].pos] = 
+			Sync(word1->place[res->filePos[i].pos], word2->place[res->filePos[i].pos]);
+		i++;
+	}
+	return res;
+}
+void Engine::deleteTrie(TrieNode*& root)
+{
+	for (int i = 0; i < 42; i++)
+		if (root->children[i])
+		{
+			deleteTrie(root->children[i]);
+			root->children[i] = NULL;
+			delete root->children[i];
+		}
+
+	delete root;
 }
