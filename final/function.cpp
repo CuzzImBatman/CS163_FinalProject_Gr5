@@ -131,7 +131,6 @@ void viewHistory(string query, vector<string> &history){
     }
 	cout << "SUGGESTION: " << endl;
     string tmp; int i=1;
-	lowCase(query);
     while (!Is_empty(in)){
         getline(in, tmp);
 		string cmp = tmp; lowCase(cmp);
@@ -280,7 +279,7 @@ void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string 
 	{
 		if (!local.empty() && local[0].pos == cur)
 		{
-			Up(sen);
+			upCase(sen);
 			for (int i = 0; i < sen.length(); i++)
 			{
 				
@@ -315,7 +314,7 @@ int wordsNum(string sen)
 	while (ss >> tmp)num++;
 	return num;
 }
-void Up(string &word)
+void upCase(string &word)
 {
 	for (int i = 0; i < word.length(); i++)
 		if (word[i] >= 'a' && word[i] <= 'z')word[i] -= 32;

@@ -43,13 +43,13 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 TrieNode* Engine::IncompleteSearch(TrieNode* root, string key, int x, bool title)
 {
 	TrieNode* res;
-	if (x == key.length())
+	if (x == key.length()-1)
 		res = wordSearch(root, "", title);
 	else res = wordSearch(root, key.substr(x + 1), title);
 
 	for (int i = 0; i < 42; i++)
 		if (root->children[i])
-			if (x == key.length())
+			if (x == key.length()-1)
 				res = Unify(res, wordSearch(root->children[i], "", title));
 			else res = Unify(res, wordSearch(root->children[i], key.substr(x + 1), title));
 	return res;
@@ -71,7 +71,7 @@ TrieNode* Engine::synonSearch(TrieNode* root, string key)
 	{
 		TrieNode* cur = wordSearch(root, store[i],false);
 		if (!cur)continue;
-		synon->order = Sync(synon->order, cur->order);
+		synon = Unify(synon, cur);
 	}
 	return synon;
 }

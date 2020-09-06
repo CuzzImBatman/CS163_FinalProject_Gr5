@@ -8,7 +8,7 @@ int main()
 	vector<string> filenames;
 	TrieNode* root, * stopword = search.getNode();
 	search.Init(root, stopword, filenames);
-	while (1) {
+	while (true) {
 
 		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl;
 		int choice;
@@ -22,6 +22,7 @@ int main()
 		string query;
 		cout << "Query:";
 		getline(cin, query);
+		lowCase(query);
 		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
 		cin >> choice;
 		cin.ignore();

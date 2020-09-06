@@ -24,11 +24,9 @@ struct local
 	bool isTitle = false;
 };
 struct TrieNode {
-	unordered_map<int, TrieNode*> children;//0-9:number,10-35:words,36:maybe :,37:.(for so thap phan), 38:$, 39:%, 40:#, 41:-
+	unordered_map<int, TrieNode*> children;
 	bool isTitle= false, isEnd =false;
-	vector<local> order;
 	vector<local> filePos;
-
 	unordered_map<int, vector<local>>place;
 };
 struct Data {
@@ -77,7 +75,7 @@ void viewHistory(string query, vector<string>& history);
 bool scoreCompare(const Data a, const Data b);
 bool searchRange(string tmp, double& lowbound, double& upbpound);
 int wordsNum(string sen);
-void Up(string &word);
+void upCase(string &word);
 void makeColor(int color);
 string filter(string sen);
 vector<local> searchTrue(vector<local> pos);
