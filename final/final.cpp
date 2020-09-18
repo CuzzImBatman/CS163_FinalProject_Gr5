@@ -38,7 +38,7 @@ int main()
 			viewHistory(query, list);
 			if (list.empty())
 			{
-				cout << "No suggestion!";
+				cout << "  (no suggestions)\n";
 				continue;
 			}
 			cin >> choice;
