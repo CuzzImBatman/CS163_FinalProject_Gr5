@@ -155,12 +155,12 @@ void viewHistory(string query, vector<string> &history){
 void clearHistory() {
 	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);
 	if (!out)
-		cout << "No available history \n";
-	else 
-	{
-		cout << "History cleared" << endl;
-		out.close();
-	}
+        cout << "No available history !\n";
+    else
+    {
+        cout << "History cleared !" << endl;
+        out.close();
+    }
 }
 void lowCase(string &sen)
 {
@@ -173,7 +173,7 @@ void lowCase(string &sen)
 	while (sen[i] == ' ')i++;
 	sen.erase(0, i);
 }
-void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {//Khanh
+void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
 	while (i < size1 && j < size2) {
 		if (res1[i].pos + cnt < res2[j].pos) ++i;
@@ -455,7 +455,8 @@ TrieNode* Engine::fileDelete(TrieNode*& word1, TrieNode* word2)
 			res->place[word1->filePos[i].pos] = word1->place[word1->filePos[i].pos];
 			i++;
 		}
-		else if (word1->filePos[i].pos > word2->filePos[j].pos)j++;
+		else if (word1->filePos[i].pos > word2->filePos[j].pos)
+            j++;
 		else
 		{
 			i++; j++;
@@ -475,7 +476,7 @@ TrieNode* Engine::placeDelete(TrieNode* &word1, TrieNode* word2)
 	for (int i = 0; i < word2->filePos.size(); i++)
 	{
 		int j = 0, k = 0;
-		while( j < word1->place[word2->filePos[i].pos].size() && k< word2->place[word2->filePos[i].pos].size())
+		while(j < word1->place[word2->filePos[i].pos].size() && k< word2->place[word2->filePos[i].pos].size())
 		{
 			if (word1->place[word2->filePos[i].pos][j].pos < word2->place[word2->filePos[i].pos][k].pos)j++;
 			else if (word1->place[word2->filePos[i].pos][j].pos > word2->place[word2->filePos[i].pos][k].pos)k++;
