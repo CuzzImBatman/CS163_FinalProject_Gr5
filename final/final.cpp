@@ -42,7 +42,7 @@ int main()
 				continue;
 			}
 			cin >> choice;
-			if (choice > list.size())cout << "Invalid input" << endl;
+			if (choice > list.size())cout << "Invalid input!" << endl;
 			query = list[choice];
 		}
 		else
@@ -90,9 +90,7 @@ int main()
 			if (!data.score)continue;
 			data.filename = search.filenames[final->filePos[i].pos];
 			data.pos = final->place[final->filePos[i].pos];
-
 			out2.push(data);
-
 		}
 
 		//cout << final->place[final->filePos[0].pos].size() << endl;
@@ -100,12 +98,11 @@ int main()
 				while (out1.size())
 				{
 					Data output = out1.top();
-					
-					
-						cout << output.filename << endl;
-						search.outputRes(output);
-						cout << endl << "Point: " << output.score << endl;
-						num++;
+                        
+                        cout << output.filename << endl;
+                        search.outputRes(output);
+                        cout << endl << "Point: " << output.score << endl;
+                        num++;
 					out1.pop();
 				}
 
