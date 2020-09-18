@@ -46,7 +46,7 @@ bool Engine::valid(char& key,bool state) {
 	if (key == '\n') {
 		key = ' '; return true;
 	}
-	if (key == '�') {
+	if (key == '—') {
 		key = '-'; return true;
 	}
 	if (key == 39 && state)return true;
