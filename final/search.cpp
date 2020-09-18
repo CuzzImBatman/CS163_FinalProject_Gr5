@@ -1,5 +1,5 @@
 #include "function.h"
-TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
+TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title,string type) {
 	TrieNode* cur = root;
 	int index, length = key.length();
 	for (int i = 0; i < length; ++i)
@@ -7,7 +7,7 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 		index = convert(key[i]);
 		if (key[i] == '*')
 		{
-			TrieNode* res = IncompleteSearch(root, key, i, title);
+			TrieNode* res = IncompleteSearch(cur, key, i, title,type);
 			if (res)return res;
 			return NULL;
 
@@ -19,7 +19,6 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 	if (cur) 
 	{
 		if (title && !cur->isTitle) return NULL;
-		
 		if (cur->isEnd)
 			if (title)
 			{
@@ -28,6 +27,8 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 				res->isTitle = true;
 				int i = 0;
 				res->filePos = searchTrue(cur->filePos);
+				if (type != "")
+					res->filePos = typeFilter(cur->filePos, type);
 				if (res->filePos.empty())return NULL;
 				while (i < res->filePos.size())
 				{
@@ -40,18 +41,20 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title) {
 	}
 	return NULL;
 }
-TrieNode* Engine::IncompleteSearch(TrieNode* root, string key, int x, bool title)
+TrieNode* Engine::IncompleteSearch(TrieNode* &root, string key, int x, bool title,string type)
 {
 	TrieNode* res;
 	if (x == key.length()-1)
-		res = wordSearch(root, "", title);
-	else res = wordSearch(root, key.substr(x + 1), title);
+		res = wordSearch(root, "", title, type);
+	else res = wordSearch(root, key.substr(x + 1), title, type);
 
 	for (int i = 0; i < 42; i++)
 		if (root->children[i])
-			if (x == key.length()-1)
-				res = Unify(res, wordSearch(root->children[i], "", title));
-			else res = Unify(res, wordSearch(root->children[i], key.substr(x + 1), title));
+		{
+			if (x == key.length() - 1)
+				res = Unify(res, wordSearch(root->children[i], "", title, type));
+			else res = Unify(res, wordSearch(root->children[i], key.substr(x + 1), title, type));
+		}
 	return res;
 }
 vector<local> searchTrue(vector<local> pos)
@@ -69,139 +72,204 @@ TrieNode* Engine::synonSearch(TrieNode* root, string key)
 	TrieNode* synon=getNode();
 	for (int i = 0; i < store.size(); i++)
 	{
-		TrieNode* cur = wordSearch(root, store[i],false);
+		TrieNode* cur = wordSearch(root, store[i],false,"");
 		if (!cur)continue;
 		synon = Unify(synon, cur);
 	}
 	return synon;
 }
-bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, TrieNode*& data) {// score=0 initially
+bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, TrieNode*& data, string type) {// score=0 initially
 	stringstream ss(query);
 	string cur, get;
 	data = getNode();
-	bool isTitle = false;
+	bool isTitle = false, search = false, AND = false, ADD = false;
+	TrieNode* pre = getNode(), * add = getNode(), * minus = getNode();
+
 	while (ss >> cur)
 	{
 		if (cur[0] == '"') {
-			TrieNode* Local=getNode();
-			TrieNode* res1 = wordSearch(root, cur, isTitle), * res2;
+			search = true;
+			TrieNode* Local = getNode();
+			TrieNode* res1 = wordSearch(root, cur, isTitle, type), * res2;
 			if (!res1) return false;
 			if (cur.back() == '"')
 			{
-				data = Unify(data, res1);
+				if (AND)
+				{
+					data = placeDelete(data, pre);
+					if (search == false)continue;
+					TrieNode* tmp = NULL;
+					tmp = fileFilter(pre, res1);
+					if (tmp)
+					{
+						data = Unify(data, tmp);
+						search = true;
+					}
+					else search = true;
+					AND = false;
+				}
+				else { data = Unify(data, res1); search = true; }
 				//score += res1->order.size();//for ranking by the number of occurence
 				continue;
 			}
 			string cur2;
 			TrieNode* tmp = res1;
-			while (ss >> cur2) {
-				int cnt = 1;
-				if (cur2 == "") return true;
-				if (cur2 == "*") {
-					++cnt;
-					while (ss >> cur2) {
-						if (cur2 == "*") ++cnt;
-						else break;
-					}
-				}
-				res2 = wordSearch(root, cur2, isTitle);
-				if (!res2) return false;
-				TrieNode* out1, *out2;
-				posFilter(tmp, res2, cnt, out1, out2);
-				if (out1->filePos.empty()) return false;
-				TrieNode* carry = Unify(out1, out2);
-				Local= Unify(Local, carry) ;
-				if (cur2.back() == '"') 
+			while (ss >> cur2)
+				if (search)
+				{
+					int space = 1;
+					if (cur2 == "")
 						break;
-				
-				tmp = out2;
+					if (cur2 == "*") {
+						++space;
+						while (ss >> cur2) {
+							if (cur2 == "*") ++space;
+							else break;
+						}
+					}
+					res2 = wordSearch(root, cur2, isTitle, type);
+					if (!res2) search = false;
+					TrieNode* out1, * out2;
+					posFilter(tmp, res2, space, out1, out2);
+					if (out1->filePos.empty()) search = false;
+					TrieNode* carry = Unify(out1, out2);
+					Local = Unify(Local, carry);
+					if (cur2.back() == '"')
+						break;
+
+					tmp = out2;
+				}
+
+			if (search)
+			{
+				if (AND)
+				{
+					data = placeDelete(data, pre);
+					if (search == false)continue;
+					TrieNode* tmp = NULL;
+					tmp = fileFilter(pre, Local);
+					if (tmp)
+						data = Unify(data, tmp);
+					else search = false;
+					AND = false;
+				}
+				else data = Unify(data, Local);
 			}
-			data = Unify(data, Local);
 			continue;
 		}
-		
-		get = cur.substr(0, 8);//intitle:
-		if (get == "intitle:") {
-			/*get = cur.substr(8);
-			TrieNode* title = wordSearch(root, get, true);
-			if (!title) return false;
-			
-			data = Unify(data, title);
-			
 
-			while (ss >> get) {
-				title = wordSearch(root, get, true);
-				if (!title) return false;
-				data = Unify(data, title);
-				}*/
+		get = cur.substr(0, 8);//intitle:
+		if (get == "intitle:")
+		{
 			cur = cur.substr(8);
 			isTitle = true;
 			continue;
 		}
+
 		if (cur[0] == '-') {//minus sign
-			if (wordSearch(root, cur.substr(1), isTitle)) return false;
+			minus = Unify(minus, wordSearch(root, cur.substr(1), isTitle, type));
 			continue;
 		}
-		if (cur == "AND" || wordSearch(stopword, cur, isTitle)) continue;
-		TrieNode* searchRes;
-		if (cur == "OR") {
-			ss >> cur;
-			searchRes = wordSearch(root, cur, isTitle);
-			if (searchRes) 
-				data = Unify(data, searchRes);
-				//score = pos.size();
-			
+		if (cur[0] == '+')
+		{
+			add = Unify(add, wordSearch(root, cur.substr(1), isTitle, type));
+			ADD = true;
 			continue;
-		}
-		if (cur[0] == '~')searchRes = synonSearch(root, cur);
-		else searchRes = wordSearch(root, cur, isTitle);
-		if (cur[0] == '+') {
-			if (!searchRes) return false;
-			data = Unify(data, searchRes);
 			//score = pos.size();
 		}
-		
-		
-		if (isNumber(cur[0])  || cur[0] == '$') {
+		if (cur != "AND" && (cur == "OR" || wordSearch(stopword, cur, isTitle, type))) continue;
+		TrieNode* searchRes;
+		if (cur == "AND")
+		{
+			AND = true;
+			continue;
+		}
+
+		if (isNumber(cur[0]) || cur[0] == '$') {
 			double lowbound, upbound;
 			if (searchRange(cur, lowbound, upbound)) {
-				string number=""; TrieNode* local=getNode();
+				string number = ""; TrieNode* local = getNode();
 				if (cur[0] == '$') {
-					if (!root->children[38]) return false;
+					if (!root->children[38])
+					{
+						search = false; continue;
+					}
 					numberSearch(root->children[38], number, lowbound, upbound, local);
-					if (local->filePos.empty()) return false;
+					if (local->filePos.empty())
+					{
+						search = false; continue;
+					}
 				}
 				else numberSearch(root, number, lowbound, upbound, local);
-				if (local->filePos.empty()) return false;
-				data = Unify(data, local);
-				
+				if (local->filePos.empty())
+				{
+					search = false; continue;
+				}
+
+
+				if (AND)
+				{
+					data = placeDelete(data, pre);
+					if (search == false)continue;
+					TrieNode* tmp = NULL;
+					tmp = fileFilter(pre, local);
+					if (tmp)
+					{
+						data = Unify(data, tmp);
+						search = true;
+					}
+					else search = false;
+					AND = false;
+				}
+				else
+				{
+					data = Unify(data, local);
+					search = true;
+				}
+
 				continue;
 			}
 		}
-		if (!searchRes) {
-			bool check = false;
-			while (ss >> cur) 
-			{
-				if (cur == "OR") {
-					ss >> cur;
-					if (cur[0] == '~')searchRes = synonSearch(root, cur);
-					else searchRes = wordSearch(root, cur, isTitle);
-					if (searchRes) {
-						data = Unify(data, searchRes);
-						//core = pos.size();
-						check = true;
-						break;
-					}
-				}
-				else return false;
-			}
-			if (!check) return false;
+		if (cur[0] == '~')
+		{
+			searchRes = synonSearch(root, cur.substr(1));
+			pre = searchRes;
 		}
-		else 
-			data = Unify(data, searchRes);
-			//score = pos.size();
+		else
+		{
+			searchRes = wordSearch(root, cur, isTitle, type);
+			pre = searchRes;
+		}
+		if (!searchRes)
+			search = false;
+
+		else
+		
+			if (AND)
+			{
+				
+				data = placeDelete(data, pre);
+                if (search == false)continue;
+				TrieNode* tmp = NULL;
+				tmp = fileFilter(pre, searchRes);
+				if (tmp)
+				{
+					data = Unify(data, tmp);
+					search = true;
+				}
+				else search = false;
+				AND = false;
+			}
+			else
+			{
+				data = Unify(data, searchRes);
+				search = true;
+			}
 		
 	}
+			//score = pos.size();
+	data = fileDelete(data, minus);
+	if (ADD)data = fileFilter(data, add);
 	return true;
 }
 void Engine::numberSearch(TrieNode* root, string number, double lowbound, double upbound, TrieNode*& local)

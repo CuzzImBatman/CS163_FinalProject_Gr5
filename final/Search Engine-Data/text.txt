@@ -1,6 +1,3 @@
-Group01News01.txt
-Group01News02.txt
-Group01News03.txt
 Group01News04.txt
 Group01News05.txt
 Group01News06.txt

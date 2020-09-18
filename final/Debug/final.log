@@ -1,10 +1,20 @@
 ﻿  function.cpp
-D:\CS163_FinalProject_Gr5\final\function.cpp(58,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(103,21): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(154,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(285,22): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(289,32): warning C4018: '<=': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(321,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(349,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(367,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(59,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(105,21): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(289,22): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(293,32): warning C4018: '<=': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(325,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(353,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(378,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(402,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(409,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(420,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(420,40): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(431,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(445,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(445,40): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(460,11): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(470,20): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(473,12): warning C4018: '<': signed/unsigned mismatch
+D:\CS163_FinalProject_Gr5\final\function.cpp(473,61): warning C4018: '<': signed/unsigned mismatch
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe
