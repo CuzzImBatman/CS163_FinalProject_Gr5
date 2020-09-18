@@ -80,6 +80,7 @@ public:
 };
 bool Is_empty(ifstream& in);
 void viewHistory(string query, vector<string>& history);
+void clearHistory();
 bool scoreCompare(const Data a, const Data b);
 bool searchRange(string tmp, double& lowbound, double& upbpound);
 int wordsNum(string sen);
