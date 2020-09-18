@@ -134,14 +134,16 @@ void viewHistory(string query, vector<string> &history){
     }
 	cout << "SUGGESTION: " << endl;
     string tmp; int i=1;
+    
     while (!Is_empty(in)){
         getline(in, tmp);
-		string cmp = tmp; lowCase(cmp);
-		if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
-		
+        string cmp = tmp; lowCase(cmp);
+        if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
+        
             history.push_back(tmp);
             cout<<i++<<". "<<tmp<<endl;
     }
+    
 	in.close();
 	/*ofstream out;
 	out.open("final/Search Engine-Data/history.txt");
