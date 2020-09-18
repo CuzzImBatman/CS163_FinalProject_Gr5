@@ -276,7 +276,6 @@ void Engine::outputRes(Data file)
 			}
 		}
 	}
-
 }
 void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string sen)
 {
@@ -318,9 +317,6 @@ void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string 
 	cout << "...";
 	makeColor(7); 
 	cout<< endl;
-
-	
-
 }
 int wordsNum(string sen)
 {
@@ -483,7 +479,7 @@ TrieNode* Engine::placeDelete(TrieNode* &word1, TrieNode* word2)
 			else if (word1->place[word2->filePos[i].pos][j].pos > word2->place[word2->filePos[i].pos][k].pos)k++;
 			else
 			{
-				word1->place[word2->filePos[i].pos].erase(word1->place[word2->filePos[i].pos].begin() + j);
+            word1->place[word2->filePos[i].pos].erase(word1->place[word2->filePos[i].pos].begin() + j);
 				k++;
 			}
 		}           
