@@ -390,8 +390,8 @@ TrieNode* Engine::Unify(TrieNode* word1, TrieNode* word2)
 }
 void Engine::deleteTrie(TrieNode*& root)
 {
-	for (int i = 0; i < 42; i++)
-		if (root->children[i])
+	for (int i = 0; i < 42; ++i)
+		if (root->children[i]!=NULL)
 		{
 			deleteTrie(root->children[i]);
 			root->children[i] = NULL;
