@@ -26,7 +26,7 @@ int main()
 			continue;
 		}
 		string query,type="";
-		cout << "Query:";
+		cout << "Query: ";
 		getline(cin, query);
 		lowCase(query);
 		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
