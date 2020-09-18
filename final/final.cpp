@@ -22,7 +22,7 @@ int main()
 		cin.ignore();
 		if (!choice) break;
 		if (choice == 2) {
-			//clearHistory();
+			clearHistory();
 			continue;
 		}
 		string query,type="";
@@ -38,7 +38,7 @@ int main()
 			viewHistory(query, list);
 			if (list.empty())
 			{
-				cout << "No suggestion!";
+				cout << "  (no suggestions)\n";
 				continue;
 			}
 			cin >> choice;
