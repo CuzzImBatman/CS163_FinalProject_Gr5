@@ -28,13 +28,7 @@ int main()
 		string query,type="";
 		cout << "Query: ";
 		getline(cin, query);
-		int i = 0;
-		{while (query[query.length() - 1 - i] == ' ')i++;
-		query.erase(query.length() - i, i);
-		i = 0;
-		while (query[i] == ' ')i++;
-		query.erase(0, i);
-		}
+		lowCase(query);
 		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
 		cin >> choice;
 		cin.ignore();
@@ -68,7 +62,7 @@ int main()
 		else type = "";
 		//priority_queue <Data>first, final;
 		TrieNode* first=search.getNode(), * final = search.getNode();
-		int num = 5;
+		int num = 0;
 
 		priority_queue <Data>out1, out2;
 		begin = clock();
@@ -103,7 +97,7 @@ int main()
 
 		//cout << final->place[final->filePos[0].pos].size() << endl;
 		
-				while (out1.size() && num)
+				while (out1.size())
 				{
 					Data output = out1.top();
 					
@@ -111,11 +105,11 @@ int main()
 						cout << output.filename << endl;
 						search.outputRes(output);
 						cout << endl << "Point: " << output.score << endl;
-						num--;
+						num++;
 					out1.pop();
 				}
 
-				while (out2.size() && num)
+				while (out2.size())
 				{
 					Data output = out2.top();
 					
@@ -124,7 +118,7 @@ int main()
 						makeColor(14);
 						cout << "Point: " << output.score << endl;
 						makeColor(7);
-						num--;
+						num++;
 					out2.pop();
 				}
 

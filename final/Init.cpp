@@ -21,17 +21,6 @@ void Engine::Init(TrieNode*& root, TrieNode*& stopword) {
 void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type)
 {
 	int start = 0;
-	bool title = true;
-
-	string count,tmp;
-	getline(file, count);
-	file.seekg(0, ios::beg);
-	getline(file, tmp,'.');
-	if (count.length() > tmp.length())count = tmp;
-	if (count.length() > 100)title = false;
-	file.close();
-	// for file don't have title
-
 	FILE* input = fopen(("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" +filenames[filePos]).c_str(), "r");
 	if (!input)return;
 	char key;
@@ -226,9 +215,8 @@ string Engine::SenFilter(string sen,bool state) {
 	int length = sen.length();
 	for (int i = 0; i < length; ++i) {
 		if (!valid(sen[i],state)) {
-			if (sen[i] == 39 && i <= length - 3  && sen[i+1] == 's' && sen[i+2] == ' ')
-                i++;
-			else if (i + 1 != length && sen[i] == '.' && isNumber(sen[i - 1]) && isNumber(sen[i + 1]))//fixed number
+			if (sen[i] == 39 && i <= length - 3  &&sen[i + 1] == 's' && sen[i + 2] == ' ') i++;
+			else if (i + 1 != length && sen[i] == '.' && isNumber(sen[i - 1]) && isNumber(sen[i + 1]))//so thap phan
 				res.append(sen, i, 1);
 		}
 		else res.append(sen, i, 1);//get 1 
@@ -294,7 +282,7 @@ void Engine::InputFiles(TrieNode*& root) {
 			cout << 1;*/
 		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" + filenames[i]);
 		if (!file.is_open()) { /*cout << "Cannot open file " << filenames[i] << endl;*/ continue; }
-		cout << filenames[i] << endl;
+		//cout << filenames[i] << endl;
 		InputFile(root, file, i, filenames[i].substr(filenames[i].size() - 3));
 		file.close();
 	}
