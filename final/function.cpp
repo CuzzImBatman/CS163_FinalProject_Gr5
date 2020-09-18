@@ -1,4 +1,5 @@
 #include "function.h"
+
 bool Is_empty(ifstream& in)
 {
 	return in.peek() == ifstream::traits_type::eof();
@@ -148,6 +149,16 @@ void viewHistory(string query, vector<string> &history){
 	out.close();*/
 	
     
+}
+void clearHistory() {
+	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\history.txt", std::ofstream::out | std::ofstream::trunc);
+	if (!out)
+		cout << "No available history \n";
+	else 
+	{
+		cout << "History cleared" << endl;
+		out.close();
+	}
 }
 void lowCase(string &sen)
 {
@@ -300,9 +311,6 @@ void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string 
 		else
 			cout << sen << " ";
 			cur++;
-
-		
-
 	}
 	makeColor(8);
 	cout << "...";
@@ -363,11 +371,8 @@ void Engine::posFilter(TrieNode* word1, TrieNode* word2,int cnt, TrieNode*& pos1
 		return;
 	pos1->filePos = filePos;
 	pos2->filePos = filePos;
-	
-
-	
 }
-TrieNode* Engine:: Unify(TrieNode* word1, TrieNode* word2)
+TrieNode* Engine::Unify(TrieNode* word1, TrieNode* word2)
 {
 	TrieNode* res = getNode();
 	if (!word2)return word1;
