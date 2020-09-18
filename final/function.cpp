@@ -370,7 +370,10 @@ void Engine::posFilter(TrieNode* word1, TrieNode* word2,int cnt, TrieNode*& pos1
 TrieNode* Engine:: Unify(TrieNode* word1, TrieNode* word2)
 {
 	TrieNode* res = getNode();
+	if (!word2)return word1;
+	if (!word1)return word2;
 	res->filePos = Sync(word1->filePos, word2->filePos);
+	if (res->filePos.empty())return NULL;
 	int i = 0;
 	while (i < res->filePos.size())
 	{
@@ -394,6 +397,7 @@ void Engine::deleteTrie(TrieNode*& root)
 }
 void Engine::filtRes(TrieNode*& res1, TrieNode*& res2)
 {
+	if (!res1 || !res2)return;
 	if (res1->filePos.empty())return;
 	for (int i = 0; i < res2->filePos.size(); i++)
 		if (!res1->place[res2->filePos[i].pos].empty()) { res2->filePos.erase(res2->filePos.begin() + i); i--; }
@@ -407,4 +411,75 @@ vector<local>Engine:: typeFilter(vector<local> filePos,string type)
 			res.push_back(filePos[i]);
 
 	return res;
+}
+TrieNode* Engine::fileFilter(TrieNode* word1, TrieNode* word2)
+{
+	TrieNode* res=getNode();
+	int i = 0, j = 0;
+	if (!word1 || !word2)return NULL;
+	while (i < word1->filePos.size() && j < word2->filePos.size())
+	{
+		if (word1->filePos[i].pos < word2->filePos[j].pos) i++;
+		else if (word1->filePos[i].pos > word2->filePos[j].pos)j++;
+		else
+		{
+			res->filePos.push_back(word1->filePos[i]);
+			i++;
+			j++;
+		}
+	}
+	for (int i = 0; i < res->filePos.size(); i++)
+	{
+		res->place[res->filePos[i].pos] =
+			Sync(word1->place[res->filePos[i].pos], word2->place[res->filePos[i].pos]);
+	}
+	if (res->filePos.empty())return NULL;
+	else return res;
+}
+TrieNode* Engine::fileDelete(TrieNode*& word1, TrieNode* word2)
+{
+	TrieNode* res = getNode();
+	if (!word1)return NULL;
+	if (!word2)return word1;
+	int i = 0, j = 0;
+	while (i < word1->filePos.size() && j < word2->filePos.size())
+	{
+		if (word1->filePos[i].pos < word2->filePos[j].pos)
+		{
+			res->filePos.push_back(word1->filePos[i]);
+			res->place[word1->filePos[i].pos] = word1->place[word1->filePos[i].pos];
+			i++;
+		}
+		else if (word1->filePos[i].pos > word2->filePos[j].pos)j++;
+		else
+		{
+			i++; j++;
+		}
+		
+	}
+	while (i < word1->filePos.size())
+	{
+		res->filePos.push_back(word1->filePos[i]);
+		res->place[word1->filePos[i].pos] = word1->place[word1->filePos[i].pos];
+		i++;
+	}
+	return res;
+}
+TrieNode* Engine::placeDelete(TrieNode* &word1, TrieNode* word2)
+{
+	for (int i = 0; i < word2->filePos.size(); i++)
+	{
+		int j = 0, k = 0;
+		while( j < word1->place[word2->filePos[i].pos].size() && k< word2->place[word2->filePos[i].pos].size())
+		{
+			if (word1->place[word2->filePos[i].pos][j].pos < word2->place[word2->filePos[i].pos][k].pos)j++;
+			else if (word1->place[word2->filePos[i].pos][j].pos > word2->place[word2->filePos[i].pos][k].pos)k++;
+			else
+			{
+				word1->place[word2->filePos[i].pos].erase(word1->place[word2->filePos[i].pos].begin() + j);
+				k++;
+			}
+		}           
+	}
+	return word1;
 }

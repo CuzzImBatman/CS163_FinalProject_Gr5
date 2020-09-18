@@ -275,11 +275,13 @@ void Engine::LoadStopword(TrieNode*& root) {
 }
 void Engine::InputFiles(TrieNode*& root) {
 	ifstream file;
-	for (int i = 0; i < filenames.size(); ++i)
+	//for (int i = 0; i < filenames.size(); ++i)
+	for (int i = 0; i < 500; ++i)
+	
 //		for (int i = 0; i < 1; ++i) 
 //
 	{
-		/*if (filenames[i] == "Group01News04.txt")
+		/*if (filenames[i] == "Vietnam.txt")
 			cout << 1;*/
 		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" + filenames[i]);
 		if (!file.is_open()) { cout << "Cannot open file " << filenames[i] << endl; continue; }

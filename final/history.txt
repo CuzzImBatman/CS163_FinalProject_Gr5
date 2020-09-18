@@ -318,3 +318,87 @@ filmmaker Guillermo
 "military officials" OR "filmmaker Guillermo"
 "filmmaker Guillermo" AND "the honorees"
 military officials
+Boys AND tower
+boys
+navies began patrolling
+navies began patrolling
+boys AND tower
+boys AND tower
+navies
+naives AND patrolling
+patrolling
+navies
+naives AND patrolling
+naives AND patrolling
+naives AND patrolling
+naives
+navies
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+navies AND patrolling
+1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+boys AND 1..4000
+incid*nt
+if (type != "")
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+incidents
+incdent
+incden
+incdents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+inc*dents
+incident +pirates
+incident
+incident
+incident
+incident
+incident
+incident
+incident
+incident
+incidents
+incident
+incident
+incident
+incident
+incident
+incident
+incident
+incident
+incident
+incidents +pirates
+incident
+incident
+pirates
+incidents +pirates
+incidents +pirates
+incidents +pirates
+incidents +pirates
+incidents -pirates
+incidents -pirates

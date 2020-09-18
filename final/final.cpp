@@ -25,7 +25,7 @@ int main()
 			//clearHistory();
 			continue;
 		}
-		string query,type;
+		string query,type="";
 		cout << "Query:";
 		getline(cin, query);
 		lowCase(query);
@@ -59,6 +59,7 @@ int main()
 			type = query.substr(9, 3);
 			query = query.substr(12);
 		}
+		else type = "";
 		//priority_queue <Data>first, final;
 		TrieNode* first=search.getNode(), * final = search.getNode();
 		int num = 0;
@@ -69,21 +70,24 @@ int main()
 		
 		search.rootSearch(root, query, stopword, final, type);
 		search.filtRes(first, final);
-		type = query.substr(0, 9);//filetype:
 		
-		for (int i = 0; i < first->filePos.size(); i++)
+		
+		if(first)for (int i = 0; i < first->filePos.size(); i++)
 		{
 			Data data;
 		    data.score = first->place[first->filePos[i].pos].size();
+			if (!data.score)continue;
 			data.filename = search.filenames[first->filePos[i].pos];
 			data.pos = first->place[first->filePos[i].pos];
 			out1.push(data);
 
 		}
-		for (int i = 0; i < final->filePos.size(); i++)
+		if (final)for (int i = 0; i < final->filePos.size(); i++)
 		{
 			Data data;
+			
 			data.score = final->place[final->filePos[i].pos].size();
+			if (!data.score)continue;
 			data.filename = search.filenames[final->filePos[i].pos];
 			data.pos = final->place[final->filePos[i].pos];
 
