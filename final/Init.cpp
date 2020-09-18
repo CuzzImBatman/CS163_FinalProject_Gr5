@@ -222,19 +222,21 @@ string Engine::SenFilter(string sen,bool state) {
 
 	if (valid) cur->isTitle = true;
 }*/
+
 void Engine::InsertStopword(TrieNode*& root, string key) {
-	TrieNode* cur = root;
-	int index, length = key.length();
-	for (int i = 0; i < length; ++i) {
-		index = convert(key[i]);
-		if (index == -1) continue;
-		
-		if (cur->children.find(index) == cur->children.end())
-			cur->children[index] = getNode();
-		cur = cur->children[index];
-	}
-	cur->isEnd = true;
+    TrieNode* cur = root;
+    int index, length = key.length();
+    for (int i = 0; i < length; ++i) {
+        index = convert(key[i]);
+        if (index == -1) continue;
+        
+        if (cur->children.find(index) == cur->children.end())
+            cur->children[index] = getNode();
+        cur = cur->children[index];
+    }
+    cur->isEnd = true;
 }
+
 void Engine::LoadStopword(TrieNode*& root) {
 	ifstream file;
 	string word;
