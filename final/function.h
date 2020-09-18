@@ -27,14 +27,16 @@ struct local
 	
 };
 
-struct TrieNode {
+struct TrieNode 
+{
 	unordered_map<int, TrieNode*> children;
 	bool isTitle= false, isEnd =false;
 	vector<local> filePos;
 	unordered_map<int, vector<local>>place;
 };
 
-struct Data {
+struct Data 
+{
 	string filename;
 	vector<local> pos;
 	int score=0;

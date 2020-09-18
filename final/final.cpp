@@ -38,7 +38,7 @@ int main()
 		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
 		cin >> choice;
 		cin.ignore();
-		if (choice)
+		if (choice==1)
 		{
 			vector<string>list;
 			viewHistory(query, list);
@@ -48,7 +48,7 @@ int main()
 				continue;
 			}
 			cin >> choice;
-			if (choice > list.size())cout << "Invalid input" << endl;
+			if (choice > list.size())cout << "Invalid input!" << endl;
 			query = list[choice];
 		}
 		else

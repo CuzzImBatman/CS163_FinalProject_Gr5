@@ -120,6 +120,12 @@ void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type
 		else isDec = -1;
 
 	} while (key != EOF);
+	
+	fclose(input);
+}
+/*void Engine::InputFile(TrieNode*& root, ifstream& file)
+{
+	int start = 0;
 	//string sentence;
 	//
 	//getline(file, sentence, '\n');
@@ -166,53 +172,9 @@ void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type
 	//		InputSentence(root, sentence, start, false, filePos, type);
 
 	//}
-	fclose(input);
-}
-/*void Engine::InputFile(TrieNode*& root, ifstream& file)
-{
-	int start = 0;
-	string sentence;
-	getline(file, sentence, '\n');
-	InputSentence(root, sentence, start, true);//a trie for the inside title, true means title:
-	bool remain = false;
-	while (!Is_empty(file)) {
-
-		if (!remain)getline(file, sentence, '.');
-		else
-		{
-			string carry;
-			getline(file, carry, '.');
-			sentence = sentence + '.' + carry;
-		}
-
-		if (sentence.length() && isNumber(sentence.back()))
-		{
-			string next;
-			getline(file, next, '.');
-			if (next.length() && isNumber(next[0]))
-			{
-				sentence = sentence + '.' + next;
-				if (isNumber(next.back()))remain = true;
-				else
-				{
-					InputSentence(root, sentence, start, false);
-					remain = false;
-				}
-			}
-			else
-			{
-				InputSentence(root, sentence, start, false);
-				InputSentence(root, next, start, false);
-				remain = false;
-
-			}
-		}
-		else InputSentence(root, sentence, start, false);
-
-	}
 }*/
-void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid,int filePos,string type) {//start:place to start sentence
-	//sentence = SenFilter(sentence,false);
+/*void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool valid,int filePos,string type) {//start:place to start sentence
+	sentence = SenFilter(sentence,false);
 	if (!root) return;
 	stringstream ss(sentence);
 	while (ss >> sentence) {
@@ -220,7 +182,7 @@ void Engine::InputSentence(TrieNode*& root, string sentence, int& start, bool va
 		else insertWord(root, sentence, start, false, filePos, type);
 		++start;
 	}
-}
+}*/
 string Engine::SenFilter(string sen,bool state) {
 	string res;
 	int length = sen.length();
@@ -236,7 +198,7 @@ string Engine::SenFilter(string sen,bool state) {
 	return res;
 }
 
-void Engine::insertWord(TrieNode*& root, string key, int place, bool valid, int filePos,string type) {
+/*void Engine::insertWord(TrieNode*& root, string key, int place, bool valid, int filePos,string type) {
 	TrieNode* cur = root, *pre=cur;
 	int index, length = key.length();
 	for (int i = 0; i < length; ++i) {
@@ -260,7 +222,7 @@ void Engine::insertWord(TrieNode*& root, string key, int place, bool valid, int 
 	
 
 	if (valid) cur->isTitle = true;
-}
+}*/
 void Engine::InsertStopword(TrieNode*& root, string key) {
 	TrieNode* cur = root;
 	int index, length = key.length();
