@@ -215,8 +215,9 @@ string Engine::SenFilter(string sen,bool state) {
 	int length = sen.length();
 	for (int i = 0; i < length; ++i) {
 		if (!valid(sen[i],state)) {
-			if (sen[i] == 39 && i <= length - 3  &&sen[i + 1] == 's' && sen[i + 2] == ' ') i++;
-			else if (i + 1 != length && sen[i] == '.' && isNumber(sen[i - 1]) && isNumber(sen[i + 1]))//so thap phan
+			if (sen[i] == 39 && i <= length - 3  && sen[i+1] == 's' && sen[i+2] == ' ')
+                i++;
+			else if (i + 1 != length && sen[i] == '.' && isNumber(sen[i - 1]) && isNumber(sen[i + 1]))//fixed number
 				res.append(sen, i, 1);
 		}
 		else res.append(sen, i, 1);//get 1 
