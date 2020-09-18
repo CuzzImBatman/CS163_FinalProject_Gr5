@@ -35,7 +35,6 @@ void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type
 	FILE* input = fopen(("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" +filenames[filePos]).c_str(), "r");
 	if (!input)return;
 	char key;
-	bool title = true;
 	int  isDec = -1;
 	TrieNode* cur = root;
 	do
@@ -249,17 +248,35 @@ void Engine::LoadStopword(TrieNode*& root) {
 }
 void Engine::InputFiles(TrieNode*& root) {
 	ifstream file;
-	//for (int i = 0; i < filenames.size(); ++i)
-	for (int i = 0; i < 500; ++i)
+	double count = 0;
+	system("color 0a");
+	cout << "\n\n\n\t\t\t\tPlease wait while indexing\n\n";
+	char a = 177, b = 219;
+	cout << "\t\t\t\t";
+	for (int i = 0; i <= 25; i++)
+		cout << a;
+	cout << "\r";
+	cout << "\t\t\t\t";
+	for (int i = 0; i < filenames.size() ; ++i)
+	//for (int i = 0; i < 500; ++i)
 	{
 		/*if (filenames[i] == "Vietnam.txt")
 			cout << 1;*/
+		double cur = (i + 1) / double(filenames.size());
+		double cmp = (count + 1) / 26;
+		if (cur >= cmp)
+		{
+			cout << b;
+			count++;
+		}
 		file.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" + filenames[i]);
 		if (!file.is_open()) { /*cout << "Cannot open file " << filenames[i] << endl;*/ continue; }
-		cout << filenames[i] << endl;
+		//cout << filenames[i] << endl;
 		InputFile(root, file, i, filenames[i].substr(filenames[i].size() - 3));
 		file.close();
 	}
+	cout << "\n\n\n\t\t\t------ALL FILES INDEXED------\n";
+	makeColor(7);
 }
 
 

@@ -1,21 +1,5 @@
-﻿  function.cpp
-D:\CS163_FinalProject_Gr5\final\function.cpp(60,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(106,21): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(165,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(302,22): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(306,32): warning C4018: '<=': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(335,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(363,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(385,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(409,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(416,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(427,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(427,40): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(438,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(452,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(452,40): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(467,11): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(477,20): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(480,12): warning C4018: '<': signed/unsigned mismatch
-D:\CS163_FinalProject_Gr5\final\function.cpp(480,61): warning C4018: '<': signed/unsigned mismatch
+﻿  Init.cpp
+D:\CS163_FinalProject_Gr5\final\Init.cpp(254,11): warning C4309: 'initializing': truncation of constant value
+D:\CS163_FinalProject_Gr5\final\Init.cpp(254,20): warning C4309: 'initializing': truncation of constant value
+D:\CS163_FinalProject_Gr5\final\Init.cpp(260,20): warning C4018: '<': signed/unsigned mismatch
   final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe
