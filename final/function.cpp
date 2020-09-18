@@ -126,7 +126,7 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 }
 void viewHistory(string query, vector<string> &history){
     ifstream in;
-    in.open("D:\\CS163_FinalProject_Gr5\\final\\history.txt");
+    in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
     if (!in) {
         cout <<"Cannot open file History !\n";
         in.close();
@@ -151,7 +151,7 @@ void viewHistory(string query, vector<string> &history){
     
 }
 void clearHistory() {
-	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\history.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);
 	if (!out)
 		cout << "No available history \n";
 	else 
@@ -162,6 +162,8 @@ void clearHistory() {
 }
 void lowCase(string &sen)
 {
+	for (int i = 0; i < sen.length(); i++)
+		if (sen[i] >= 'A' && sen[i] <= 'Z')sen[i] += 32;
 	int i = 0;
 	while (sen[sen.length()-1-i] == ' ')i++;
 	sen.erase(sen.length()  - i, i);
