@@ -28,26 +28,51 @@ int main()
 		string query,type="";
 		cout << "Query: ";
 		getline(cin, query);
-		lowCase(query);
-		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
+		int i = 0;
+		{while (query[query.length() - 1 - i] == ' ')i++;
+		query.erase(query.length() - i, i);
+		i = 0;
+		while (query[i] == ' ')i++;
+		query.erase(0, i);
+		}
+		cout << "0. Search" << endl << "1. Display history" << endl << "2. Display suggestion" << endl;
 		cin >> choice;
 		cin.ignore();
-		if (choice)
+		if (choice == 1)
+		{
+			vector<string> list;
+			viewHistory(list);
+			if (list.empty())
+			{
+				cout << "  (no search history)\n";
+				continue;
+			}
+			cin >> choice;
+			if (!choice)
+				continue;
+			else if (choice > list.size())
+				cout << "Invalid input" << endl;
+			else
+				query = list[choice-1];
+		}
+		else if (choice == 2)
 		{
 			vector<string>list;
-			viewHistory(query, list);
+			viewSuggestion(query, list);
 			if (list.empty())
 			{
 				cout << "  (no suggestions)\n";
 				continue;
 			}
 			cin >> choice;
-			if (choice > list.size())cout << "Invalid input" << endl;
-			query = list[choice];
+			if (choice > list.size()) 
+				cout << "Invalid input" << endl;
+			else
+				query = list[choice-1];
 		}
 		else
 		{
-			ofstream output; output.open("history.txt", ios::app);
+			ofstream output("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", ios::app);
 			output << query << endl;
 			output.close();
 		}

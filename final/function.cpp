@@ -124,12 +124,11 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 	while (j < size2) sync.push_back(local2[j++]);
 	return sync;
 }
-void viewHistory(string query, vector<string> &history){
+void viewSuggestion(string query, vector<string> &suggestion){
     ifstream in;
     in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
     if (!in) {
-        cout <<"Cannot open file History !\n";
-        in.close();
+        cout <<"Cannot open file for suggestion !\n";
         return;
     }
 	cout << "SUGGESTION: " << endl;
@@ -139,16 +138,27 @@ void viewHistory(string query, vector<string> &history){
 		string cmp = tmp; lowCase(cmp);
 		if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
 		
-            history.push_back(tmp);
+            suggestion.push_back(tmp);
             cout<<i++<<". "<<tmp<<endl;
     }
 	in.close();
-	/*ofstream out;
-	out.open("final/Search Engine-Data/history.txt");
-	out << query << endl;
-	out.close();*/
-	
-    
+}
+void viewHistory(vector<string>& history) {
+	ifstream in("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
+	if (!in) {
+		cout << "Cannot open file for history queries!\n";
+		return;
+	}
+	cout << "HISTORY: " << endl;
+	string tmp; int i = 1;
+	while (!Is_empty(in)) {
+		getline(in, tmp);
+		history.push_back(tmp);
+		cout << i++ << ". " << tmp << endl;
+	}
+	if (!history.empty())
+		cout << "0. Exit" << endl;
+	in.close();
 }
 void clearHistory() {
 	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);

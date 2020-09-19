@@ -24,7 +24,7 @@ void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type
 	FILE* input = fopen(("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\" +filenames[filePos]).c_str(), "r");
 	if (!input)return;
 	char key;
-	bool title = true;
+	title = true;
 	int  isDec = -1;
 	TrieNode* cur = root;
 	do
