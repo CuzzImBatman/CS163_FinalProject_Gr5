@@ -40,3 +40,19 @@ precariat
 ~academic -precariat -katy -Civilisation
 ~academic -precariat -katy -Civilisation -African
 ~academic -precariat -katy -Civilisation -African -war
+"ice bear"
+ice
+"ice cliff"
+"ice cliffs"
+"ice cliffs" -mechanical
+"ice cliffs" AND "The Associated Press"
+"The Associated Press"
+"ice cliffs" AND "The Associated Press"
+"ice cliffs" AND "The Associated Press"
+"ice cliffs"
+"The Associated Press"
+"capital Islamabad"
+"capital Islamabad" AND "The Associated Press"
+"Pacific Ocean"
+"Pacific Ocean" AND "The Associated Press"
+"Pacific Ocean" OR "The Associated Press"

@@ -117,7 +117,12 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, TrieNo
 					else search = true;
 					AND = false;
 				}
-				else { data = Unify(data, res1); search = true; }
+				else
+				{
+					pre = res1;
+					data = Unify(data, res1); 
+					search = true;
+				}
 				//score += res1->order.size();//for ranking by the number of occurence
 				continue;
 			}
@@ -162,7 +167,12 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, TrieNo
 					else search = false;
 					AND = false;
 				}
-				else data = Unify(data, Local);
+				else
+				{
+					pre = Local;
+					data = Unify(data, Local);
+					search = true;
+				}
 			}
 			continue;
 		}

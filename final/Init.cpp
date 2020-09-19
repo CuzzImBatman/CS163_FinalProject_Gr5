@@ -257,8 +257,8 @@ void Engine::InputFiles(TrieNode*& root) {
 		cout << a;
 	cout << "\r";
 	cout << "\t\t\t\t";
-	for (int i = 0; i < filenames.size() ; ++i)
-	//for (int i = 0; i < 500; ++i)
+	//for (int i = 0; i < filenames.size() ; ++i)
+	for (int i = 0; i < 500; ++i)
 	{
 		/*if (filenames[i] == "Vietnam.txt")
 			cout << 1;*/
