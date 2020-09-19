@@ -97,8 +97,9 @@ bool Engine::checkOperator(string query) {
 			|| cur == "AND"
 			|| cur == "OR"
 			|| cur[0] == '-'
+			//||cur[0]=='~'
 			//|| cur == "*"
-			|| cur == "filetype:txt"
+			//|| cur == "filetype:txt"
 			|| cur[0] == '"'
 			)
 			return false;
@@ -124,24 +125,33 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 	while (j < size2) sync.push_back(local2[j++]);
 	return sync;
 }
-void viewSuggestion(string query, vector<string> &suggestion){
+void viewSuggestion(string query, vector<string> &history){
     ifstream in;
     in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
     if (!in) {
-        cout <<"Cannot open file for suggestion !\n";
+        cout <<"Cannot open file History !\n";
+        in.close();
         return;
     }
 	cout << "SUGGESTION: " << endl;
     string tmp; int i=1;
+    
     while (!Is_empty(in)){
         getline(in, tmp);
-		string cmp = tmp; lowCase(cmp);
-		if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
-		
-            suggestion.push_back(tmp);
+        string cmp = tmp; lowCase(cmp);
+        if (cmp == query || cmp == "" || cmp.find(query) == -1)continue;
+        
+            history.push_back(tmp);
             cout<<i++<<". "<<tmp<<endl;
     }
+    
 	in.close();
+	/*ofstream out;
+	out.open("final/Search Engine-Data/history.txt");
+	out << query << endl;
+	out.close();*/
+	
+    
 }
 void viewHistory(vector<string>& history) {
 	ifstream in("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
@@ -161,17 +171,19 @@ void viewHistory(vector<string>& history) {
 	in.close();
 }
 void clearHistory() {
-	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);
 	if (!out)
-		cout << "No available history \n";
-	else 
-	{
-		cout << "History cleared" << endl;
-		out.close();
-	}
+        cout << "No available history !\n";
+    else
+    {
+        cout << "History cleared !" << endl;
+        out.close();
+    }
 }
 void lowCase(string &sen)
 {
+	for (int i = 0; i < sen.length(); i++)
+		if (sen[i] >= 'A' && sen[i] <= 'Z')sen[i] += 32;
 	int i = 0;
 	while (sen[sen.length()-1-i] == ' ')i++;
 	sen.erase(sen.length()  - i, i);
@@ -179,7 +191,7 @@ void lowCase(string &sen)
 	while (sen[i] == ' ')i++;
 	sen.erase(0, i);
 }
-void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {//Khanh
+void Engine::takeLocal(vector<local>& res1, vector<local>& res2, int cnt, vector<local>& place1, vector<local>& place2) {
 	int i = 0, j = 0, size1 = res1.size(), size2 = res2.size();
 	while (i < size1 && j < size2) {
 		if (res1[i].pos + cnt < res2[j].pos) ++i;
@@ -284,7 +296,6 @@ void Engine::outputRes(Data file)
 			}
 		}
 	}
-
 }
 void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string sen)
 {
@@ -326,9 +337,6 @@ void Engine::outputPross(vector<local> &local, int &cur, int &testlength,string 
 	cout << "...";
 	makeColor(7); 
 	cout<< endl;
-
-	
-
 }
 int wordsNum(string sen)
 {
@@ -400,8 +408,8 @@ TrieNode* Engine::Unify(TrieNode* word1, TrieNode* word2)
 }
 void Engine::deleteTrie(TrieNode*& root)
 {
-	for (int i = 0; i < 42; i++)
-		if (root->children[i])
+	for (int i = 0; i < 42; ++i)
+		if (root->children[i]!=NULL)
 		{
 			deleteTrie(root->children[i]);
 			root->children[i] = NULL;
@@ -455,7 +463,7 @@ TrieNode* Engine::fileDelete(TrieNode*& word1, TrieNode* word2)
 {
 	TrieNode* res = getNode();
 	if (!word1)return NULL;
-	if (!word2)return word1;
+	if (!word2|| word2->filePos.empty())return word1;
 	int i = 0, j = 0;
 	while (i < word1->filePos.size() && j < word2->filePos.size())
 	{
@@ -465,7 +473,8 @@ TrieNode* Engine::fileDelete(TrieNode*& word1, TrieNode* word2)
 			res->place[word1->filePos[i].pos] = word1->place[word1->filePos[i].pos];
 			i++;
 		}
-		else if (word1->filePos[i].pos > word2->filePos[j].pos)j++;
+		else if (word1->filePos[i].pos > word2->filePos[j].pos)
+            j++;
 		else
 		{
 			i++; j++;
@@ -485,13 +494,13 @@ TrieNode* Engine::placeDelete(TrieNode* &word1, TrieNode* word2)
 	for (int i = 0; i < word2->filePos.size(); i++)
 	{
 		int j = 0, k = 0;
-		while( j < word1->place[word2->filePos[i].pos].size() && k< word2->place[word2->filePos[i].pos].size())
+		while(j < word1->place[word2->filePos[i].pos].size() && k< word2->place[word2->filePos[i].pos].size())
 		{
 			if (word1->place[word2->filePos[i].pos][j].pos < word2->place[word2->filePos[i].pos][k].pos)j++;
 			else if (word1->place[word2->filePos[i].pos][j].pos > word2->place[word2->filePos[i].pos][k].pos)k++;
 			else
 			{
-				word1->place[word2->filePos[i].pos].erase(word1->place[word2->filePos[i].pos].begin() + j);
+            word1->place[word2->filePos[i].pos].erase(word1->place[word2->filePos[i].pos].begin() + j);
 				k++;
 			}
 		}           

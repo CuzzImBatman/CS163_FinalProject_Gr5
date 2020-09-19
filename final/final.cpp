@@ -15,9 +15,10 @@ int main()
 	
 	while (true) {
 
-		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl << "3. Re-Index" << endl;
+		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl << "3. Display history" << endl;
 
 		int choice;
+		string query, type = "";
 		cin >> choice;
 		cin.ignore();
 		if (!choice) break;
@@ -25,20 +26,7 @@ int main()
 			clearHistory();
 			continue;
 		}
-		string query,type="";
-		cout << "Query: ";
-		getline(cin, query);
-		int i = 0;
-		{while (query[query.length() - 1 - i] == ' ')i++;
-		query.erase(query.length() - i, i);
-		i = 0;
-		while (query[i] == ' ')i++;
-		query.erase(0, i);
-		}
-		cout << "0. Search" << endl << "1. Display history" << endl << "2. Display suggestion" << endl;
-		cin >> choice;
-		cin.ignore();
-		if (choice == 1)
+		if (choice == 3)
 		{
 			vector<string> list;
 			viewHistory(list);
@@ -53,9 +41,22 @@ int main()
 			else if (choice > list.size())
 				cout << "Invalid input" << endl;
 			else
-				query = list[choice-1];
+				query = list[choice - 1];
 		}
-		else if (choice == 2)
+		
+		cout << "Query:";
+		getline(cin, query);
+		int i = 0;
+		{while (query[query.length() - 1 - i] == ' ')i++;
+		query.erase(query.length() - i, i);
+		i = 0;
+		while (query[i] == ' ')i++;
+		query.erase(0, i);
+		}
+		cout << "0. Search" << endl << "1. Display history suggestion" << endl;
+		cin >> choice;
+		cin.ignore();
+		if (choice==1)
 		{
 			vector<string>list;
 			viewSuggestion(query, list);
@@ -65,14 +66,12 @@ int main()
 				continue;
 			}
 			cin >> choice;
-			if (choice > list.size()) 
-				cout << "Invalid input" << endl;
-			else
-				query = list[choice-1];
+			if (choice > list.size())cout << "Invalid input!" << endl;
+			query = list[choice];
 		}
 		else
 		{
-			ofstream output("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt", ios::app);
+			ofstream output; output.open("history.txt", ios::app);
 			output << query << endl;
 			output.close();
 		}
@@ -83,11 +82,17 @@ int main()
 		{
 			type = query.substr(9, 3);
 			query = query.substr(12);
+			{while (query[query.length() - 1 - i] == ' ')i++;
+			query.erase(query.length() - i, i);
+			i = 0;
+			while (query[i] == ' ')i++;
+			query.erase(0, i);
+			}
 		}
 		else type = "";
 		//priority_queue <Data>first, final;
 		TrieNode* first=search.getNode(), * final = search.getNode();
-		int num = 0;
+		int num = 5;
 
 		priority_queue <Data>out1, out2;
 		begin = clock();
@@ -122,33 +127,36 @@ int main()
 
 		//cout << final->place[final->filePos[0].pos].size() << endl;
 		
-				while (out1.size())
+				while (out1.size() && num)
 				{
 					Data output = out1.top();
 					
-					
-						cout << output.filename << endl;
+					     makeColor(8);
+						cout << endl << output.filename ;
+						makeColor(7);
 						search.outputRes(output);
 						cout << endl << "Point: " << output.score << endl;
-						num++;
+						num--;
 					out1.pop();
 				}
 
-				while (out2.size())
+				while (out2.size() && num)
 				{
 					Data output = out2.top();
 					
-						cout << output.filename << endl;
+					makeColor(8);
+					cout << endl << output.filename;
+					makeColor(7);
 						search.outputRes(output);
 						makeColor(14);
 						cout << "Point: " << output.score << endl;
 						makeColor(7);
-						num++;
+						num--;
 					out2.pop();
 				}
 
 				t_searchE = clock();
-				cout << endl << "TOTAL RESULT: " << num;
+				cout << endl << "TOTAL RESULT: " << 5-num;
 				cout << endl << "TOTAL TIME: " << (float)(t_searchE - begin) / CLOCKS_PER_SEC << endl;
 
 	}

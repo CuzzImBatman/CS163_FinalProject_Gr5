@@ -13,11 +13,11 @@
 #include<sstream>
 #include<vector>
 #include<algorithm>
-#include <queue>
-#include <unordered_map> 
-#include <stdio.h>
-#include <conio.h>
-#include <windows.h>
+#include<queue>
+#include<unordered_map>
+#include<stdio.h>
+#include<conio.h>
+#include<windows.h>
 #include<ctime>
 using namespace std;
 struct local
@@ -26,13 +26,17 @@ struct local
 	bool isTitle = false;
 	
 };
-struct TrieNode {
+
+struct TrieNode 
+{
 	unordered_map<int, TrieNode*> children;
 	bool isTitle= false, isEnd =false;
 	vector<local> filePos;
 	unordered_map<int, vector<local>>place;
 };
-struct Data {
+
+struct Data 
+{
 	string filename;
 	vector<local> pos;
 	int score=0;
@@ -78,9 +82,9 @@ public:
 	TrieNode* placeDelete(TrieNode*& word1, TrieNode* word2);
 	TrieNode* fileDelete(TrieNode*& word1, TrieNode* word2);
 };
+
 bool Is_empty(ifstream& in);
-void viewSuggestion(string query, vector<string>& suggestion);
-void viewHistory(vector<string>& history);
+void viewSuggestion(string query, vector<string>& history);
 void clearHistory();
 bool scoreCompare(const Data a, const Data b);
 bool searchRange(string tmp, double& lowbound, double& upbpound);
@@ -90,4 +94,5 @@ void makeColor(int color);
 string filter(string sen);
 vector<local> searchTrue(vector<local> pos);
 void lowCase(string &sen);
+void viewHistory(vector<string>& history);
 

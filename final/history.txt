@@ -1,0 +1,58 @@
+filtype:doc DOCKED door
+filetype:doc DOCKED door
+filetype:doc DOCKED
+filetype:doc DOCKED
+filetype:doc DOCKED
+docked
+filetype:doc DOCKED
+filetype:doc DOCKED
+filetype:doc DOCKED
+filetype:doc DOCKED
+filetype:doc DOCKED
+docked
+res->filePos = typeFilter(cur->filePos, type);
+filetype:doc DOCKED
+filetype:doc DOCKED
+filetype:doc DOCKED
+~academe -earlier -moon -seas
+123
+~academic
+~academic -precariat
+~academic -precariat
+~academic
+~academic precariat
+~academic precariat
+~academic precariat
+~academic -precariat
+~academic -precariat
+~academic -precariat
+~academic -precariat
+~academic
+precariat
+~academic -precariat
+~academic -precariat
+~academic
+~academic
+~academic -precariat
+~academic
+~academic -precariat
+~academic -precariat -katy
+~academic -precariat -katy -Civilisation
+~academic -precariat -katy -Civilisation -African
+~academic -precariat -katy -Civilisation -African -war
+"ice bear"
+ice
+"ice cliff"
+"ice cliffs"
+"ice cliffs" -mechanical
+"ice cliffs" AND "The Associated Press"
+"The Associated Press"
+"ice cliffs" AND "The Associated Press"
+"ice cliffs" AND "The Associated Press"
+"ice cliffs"
+"The Associated Press"
+"capital Islamabad"
+"capital Islamabad" AND "The Associated Press"
+"Pacific Ocean"
+"Pacific Ocean" AND "The Associated Press"
+"Pacific Ocean" OR "The Associated Press"

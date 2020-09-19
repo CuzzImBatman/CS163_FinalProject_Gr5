@@ -1,0 +1,4 @@
+﻿  Init.cpp
+D:\CS163_FinalProject_Gr5\final\Init.cpp(254,11): warning C4309: 'initializing': truncation of constant value
+D:\CS163_FinalProject_Gr5\final\Init.cpp(254,20): warning C4309: 'initializing': truncation of constant value
+  final.vcxproj -> D:\CS163_FinalProject_Gr5\final\Debug\final.exe
