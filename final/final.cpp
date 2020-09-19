@@ -15,9 +15,10 @@ int main()
 	
 	while (true) {
 
-		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl << "3. Re-Index" << endl;
+		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl << "3. Display history" << endl;
 
 		int choice;
+		string query, type = "";
 		cin >> choice;
 		cin.ignore();
 		if (!choice) break;
@@ -25,7 +26,24 @@ int main()
 			clearHistory();
 			continue;
 		}
-		string query,type="";
+		if (choice == 3)
+		{
+			vector<string> list;
+			viewHistory(list);
+			if (list.empty())
+			{
+				cout << "  (no search history)\n";
+				continue;
+			}
+			cin >> choice;
+			if (!choice)
+				continue;
+			else if (choice > list.size())
+				cout << "Invalid input" << endl;
+			else
+				query = list[choice - 1];
+		}
+		
 		cout << "Query:";
 		getline(cin, query);
 		int i = 0;
@@ -41,7 +59,7 @@ int main()
 		if (choice==1)
 		{
 			vector<string>list;
-			viewHistory(query, list);
+			viewSuggestion(query, list);
 			if (list.empty())
 			{
 				cout << "  (no suggestions)\n";
@@ -64,6 +82,12 @@ int main()
 		{
 			type = query.substr(9, 3);
 			query = query.substr(12);
+			{while (query[query.length() - 1 - i] == ' ')i++;
+			query.erase(query.length() - i, i);
+			i = 0;
+			while (query[i] == ' ')i++;
+			query.erase(0, i);
+			}
 		}
 		else type = "";
 		//priority_queue <Data>first, final;
@@ -107,8 +131,9 @@ int main()
 				{
 					Data output = out1.top();
 					
-					
-						cout << output.filename << endl;
+					     makeColor(8);
+						cout << endl << output.filename ;
+						makeColor(7);
 						search.outputRes(output);
 						cout << endl << "Point: " << output.score << endl;
 						num--;
@@ -119,7 +144,9 @@ int main()
 				{
 					Data output = out2.top();
 					
-						cout << output.filename << endl;
+					makeColor(8);
+					cout << endl << output.filename;
+					makeColor(7);
 						search.outputRes(output);
 						makeColor(14);
 						cout << "Point: " << output.score << endl;
@@ -129,7 +156,7 @@ int main()
 				}
 
 				t_searchE = clock();
-				cout << endl << "TOTAL RESULT: " << num;
+				cout << endl << "TOTAL RESULT: " << 5-num;
 				cout << endl << "TOTAL TIME: " << (float)(t_searchE - begin) / CLOCKS_PER_SEC << endl;
 
 	}

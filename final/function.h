@@ -84,7 +84,7 @@ public:
 };
 
 bool Is_empty(ifstream& in);
-void viewHistory(string query, vector<string>& history);
+void viewSuggestion(string query, vector<string>& history);
 void clearHistory();
 bool scoreCompare(const Data a, const Data b);
 bool searchRange(string tmp, double& lowbound, double& upbpound);
@@ -94,4 +94,5 @@ void makeColor(int color);
 string filter(string sen);
 vector<local> searchTrue(vector<local> pos);
 void lowCase(string &sen);
+void viewHistory(vector<string>& history);
 

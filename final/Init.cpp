@@ -23,11 +23,9 @@ void Engine::InputFile(TrieNode*& root, ifstream& file, int filePos, string type
 	int start = 0;
 	bool title = true;
 
-	string count,tmp;
+	string count;
 	getline(file, count);
-	file.seekg(0, ios::beg);
-	getline(file, tmp,'.');
-	if (count.length() > tmp.length())count = tmp;
+	
 	if (count.length() > 100)title = false;
 	file.close();
 	// for file don't have title

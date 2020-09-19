@@ -37,7 +37,16 @@ TrieNode* Engine::wordSearch(TrieNode* root, string key, bool title,string type)
 				}
 				return res;
 			}
-			else return cur;
+			else if (type != "")
+			{
+				TrieNode* res = getNode();
+				res->isEnd = true;
+				res->isTitle =cur->isTitle;
+				res->filePos = typeFilter(cur->filePos, type);
+				res->place = cur->place;
+				return res;
+			}
+				else return cur;
 	}
 	return NULL;
 }
@@ -68,7 +77,7 @@ vector<local> searchTrue(vector<local> pos)
 }
 TrieNode* Engine::synonSearch(TrieNode* root, string key)
 {
-	vector<string>store = getSynon(key.substr(1));
+	vector<string>store = getSynon(key);
 	TrieNode* synon=getNode();
 	for (int i = 0; i < store.size(); i++)
 	{
@@ -91,7 +100,7 @@ bool Engine::rootSearch(TrieNode* root, string query, TrieNode* stopword, TrieNo
 			search = true;
 			TrieNode* Local = getNode();
 			TrieNode* res1 = wordSearch(root, cur, isTitle, type), * res2;
-			if (!res1) return false;
+			if (!res1) search = false;
 			if (cur.back() == '"')
 			{
 				if (AND)
