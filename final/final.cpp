@@ -15,7 +15,9 @@ int main()
 	
 	while (true) {
 
-		cout << "0. Exit" << endl << "1. Input query " << endl << "2. Clear history" << endl << "3. Display history" << endl;
+		cout << "0. Exit" << endl << "1. Input query " 
+			<< endl << "2. Clear history" << endl 
+			<< "3. Display history" << endl;
 
 		int choice;
 		string query, type = "";

@@ -127,7 +127,7 @@ vector<local> Engine::Sync(vector<local>& local1, vector<local>& local2) {
 }
 void viewSuggestion(string query, vector<string> &history){
     ifstream in;
-    in.open("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
+    in.open("D:\\CS163_FinalProject_Gr5\\final\\history.txt");
     if (!in) {
         cout <<"Cannot open file History !\n";
         in.close();
@@ -154,7 +154,7 @@ void viewSuggestion(string query, vector<string> &history){
     
 }
 void viewHistory(vector<string>& history) {
-	ifstream in("D:\\CS163_FinalProject_Gr5\\final\\Search Engine-Data\\history.txt");
+	ifstream in("D:\\CS163_FinalProject_Gr5\\final\\history.txt");
 	if (!in) {
 		cout << "Cannot open file for history queries!\n";
 		return;
@@ -171,7 +171,7 @@ void viewHistory(vector<string>& history) {
 	in.close();
 }
 void clearHistory() {
-	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\\\Search Engine-Data\\history.txt", std::ofstream::out | std::ofstream::trunc);
+	ofstream out("D:\\CS163_FinalProject_Gr5\\final\\history.txt", std::ofstream::out | std::ofstream::trunc);
 	if (!out)
         cout << "No available history !\n";
     else

@@ -1,2 +1,1 @@
 D:\CS163_FinalProject_Gr5\final\Debug\final.exe
-D:\CS163_FinalProject_Gr5\final\Debug\final.pdb
